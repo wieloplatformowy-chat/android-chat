@@ -7,14 +7,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText editText;
-    ArrayAdapter<String> adapter;
+    EditText messageInputForm;
+    ArrayAdapter<String> inputFormAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,18 +22,21 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        editText = (EditText) findViewById(R.id.editText);
-        ListView listView = (ListView) findViewById(R.id.listView);
+        messageInputForm = (EditText) findViewById(R.id.messageInputForm);
+        ListView listView = (ListView) findViewById(R.id.messageList);
+        inputFormAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, new ArrayList<String>());
+        listView.setAdapter(inputFormAdapter);
 
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, new ArrayList<String>());
-
-        listView.setAdapter(adapter);
+        findViewById(R.id.sendMessageButton).setOnClickListener(this);
     }
 
-    public void onWyslijClick(View v){
-        String wiadomosc = editText.getText().toString();
-        adapter.add(wiadomosc);
-        adapter.notifyDataSetChanged();
-    }
 
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.sendMessageButton){
+            String message = messageInputForm.getText().toString();
+            inputFormAdapter.add(message);
+            inputFormAdapter.notifyDataSetChanged();
+        }
+    }
 }

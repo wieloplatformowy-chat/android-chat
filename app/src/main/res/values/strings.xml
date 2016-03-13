@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Chat</string>
-    <string name="title_activity_main">Komunikator</string>
+    <string name="title_activity_main">Chat</string>
 </resources>
