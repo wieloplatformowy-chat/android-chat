@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if(v.getId() == R.id.sendMessageButton){
             String message = mMessageInputForm.getText().toString();
+            mMessageInputForm.setText("");
             mInputFormAdapter.add(message);
             mInputFormAdapter.notifyDataSetChanged();
         }

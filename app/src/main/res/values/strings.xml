@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Chat</string>
     <string name="title_activity_main">Chat</string>
+    <string name="send_button_text">Send</string>
 </resources>
