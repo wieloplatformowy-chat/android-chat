@@ -3,10 +3,14 @@ package pl.sggw.wzim.chat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -25,8 +29,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
 
         mMessageInputForm = (EditText) findViewById(R.id.messageInputForm);
-        ListView messageList = (ListView) findViewById(R.id.messageList);
 
+        ListView messageList = (ListView) findViewById(R.id.messageList);
 
         if(savedInstanceState != null)
             mListData = savedInstanceState.getStringArrayList(LIST_DATA_KEY);
@@ -44,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if(v.getId() == R.id.sendMessageButton){
             String message = mMessageInputForm.getText().toString();
+            if(message.isEmpty()){
+                return;
+            }
             mMessageInputForm.setText("");
             mInputFormAdapter.add(message);
             mInputFormAdapter.notifyDataSetChanged();
