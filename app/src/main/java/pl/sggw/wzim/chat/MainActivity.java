@@ -12,8 +12,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText messageInputForm;
-    ArrayAdapter<String> inputFormAdapter;
+    private EditText mMessageInputForm;
+    private ArrayAdapter<String> mInputFormAdapter;
+    private ArrayList<String> mListData;
+    private final String LIST_DATA_KEY = "list data key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +24,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        messageInputForm = (EditText) findViewById(R.id.messageInputForm);
-        ListView listView = (ListView) findViewById(R.id.messageList);
-        inputFormAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, new ArrayList<String>());
-        listView.setAdapter(inputFormAdapter);
+        mMessageInputForm = (EditText) findViewById(R.id.messageInputForm);
+        ListView messageList = (ListView) findViewById(R.id.messageList);
+
+
+        if(savedInstanceState != null)
+            mListData = savedInstanceState.getStringArrayList(LIST_DATA_KEY);
+        else
+            mListData =  new ArrayList<>();
+
+        mInputFormAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,mListData);
+        messageList.setAdapter(mInputFormAdapter);
 
         findViewById(R.id.sendMessageButton).setOnClickListener(this);
     }
@@ -34,9 +43,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.sendMessageButton){
-            String message = messageInputForm.getText().toString();
-            inputFormAdapter.add(message);
-            inputFormAdapter.notifyDataSetChanged();
+            String message = mMessageInputForm.getText().toString();
+            mInputFormAdapter.add(message);
+            mInputFormAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList(LIST_DATA_KEY,mListData);
     }
 }
