@@ -3,14 +3,11 @@ package pl.sggw.wzim.chat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
+
 
 import java.util.ArrayList;
 
@@ -19,7 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText mMessageInputForm;
     private ArrayAdapter<String> mInputFormAdapter;
     private ArrayList<String> mListData;
-    private final String LIST_DATA_KEY = "list data key";
+    private final static String LIST_DATA_KEY = "list data key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if(v.getId() == R.id.sendMessageButton){
             String message = mMessageInputForm.getText().toString();
-            if(message.isEmpty()){
-                return;
-            }
-            mMessageInputForm.setText("");
-            mInputFormAdapter.add(message);
-            mInputFormAdapter.notifyDataSetChanged();
+            sendMessageIfNotEmpty(message);
         }
     }
 
@@ -61,5 +53,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putStringArrayList(LIST_DATA_KEY,mListData);
+    }
+
+    private void sendMessageIfNotEmpty(String message){
+        if(!message.isEmpty()){
+            mMessageInputForm.setText("");
+            mInputFormAdapter.add(message);
+            mInputFormAdapter.notifyDataSetChanged();
+        }
     }
 }
