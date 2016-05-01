@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.io.File;
 
 public class UserrestcontrollerApi {
-  String basePath = "https://chatbackend-chat22.rhcloud.com:80/";
+  String basePath = "http://chatbackend-chat22.rhcloud.com:80/";
   ApiInvoker apiInvoker = ApiInvoker.getInstance();
 
   public void addHeader(String key, String value) {
