@@ -5,7 +5,8 @@ import pl.sggw.wzim.chat.swagger.model.*;
 import pl.sggw.wzim.chat.swagger.api.*;
 
 /**
- * Created by Patryk on 30.04.2016.
+ * @author Patryk Konieczny
+ * @since 02.05.2016
  */
 public class ServerConnection {
     private static ServerConnection ourInstance = new ServerConnection();
@@ -17,45 +18,70 @@ public class ServerConnection {
     private ServerConnection() {
     }
 
-    public String register(String name, String password) {
+
+    public BaseResponse register(String name, String password) {
         UserrestcontrollerApi api = new UserrestcontrollerApi();
         UserDto newUser = new UserDto();
 
         newUser.setName(name);
         newUser.setPassword(password);
         try {
-            BaseResponse serverResponse = api.registerUsingPOST(newUser);
-            if (serverResponse.getSuccess()){
-                return "success";
-            }
-            else {
-                return serverResponse.getError().getName();
-            }
+            return api.registerUsingPOST(newUser);
         } catch (ApiException ex) {
-            return ex.getCode().toString();
+          return getBaseResponsFromJSON(ex.getMessage());
         } catch (Exception ex) {
-            return ex.getMessage();
+            BaseResponse exceptionalResponse = new BaseResponse();
+            ResponseError exceptionalError = new ResponseError();
+
+            exceptionalError.setId(-770);
+            exceptionalError.setName(ex.toString());
+            exceptionalError.setMessage(ex.getMessage());
+
+            exceptionalResponse.setError(exceptionalError);
+            exceptionalResponse.setSuccess(false);
+            return new BaseResponse();
         }
     }
 
-    public String login(String name, String password) {
+    public DataResponsestring login(String name, String password) {
         UserrestcontrollerApi api = new UserrestcontrollerApi();
         UserDto user = new UserDto();
 
         user.setName(name);
         user.setPassword(password);
         try {
-            DataResponsestring serverResponse = api.loginUsingPOST(user);
-            return "success";
-
+            return api.loginUsingPOST(user);
         } catch (ApiException ex) {
-             return ex.getCode().toString();
+             return getDataResponsestringFromJSON(ex.getMessage());
         } catch (Exception ex) {
-        return ex.getMessage();
+            DataResponsestring exceptionalResponse = new DataResponsestring();
+            ResponseError exceptionalError = new ResponseError();
+
+            exceptionalError.setId(-770);
+            exceptionalError.setName(ex.toString());
+            exceptionalError.setMessage(ex.getMessage());
+
+            exceptionalResponse.setError(exceptionalError);
+            exceptionalResponse.setSuccess(false);
+
+            return exceptionalResponse;
         }
     }
 
+    private BaseResponse getBaseResponsFromJSON(String json) {
+        try {
+            return (BaseResponse)ApiInvoker.deserialize(json,"",BaseResponse.class);
+        } catch (Exception ex){
+            return new BaseResponse();
+        }
+    }
 
-
+    private DataResponsestring getDataResponsestringFromJSON(String json){
+        try {
+            return (DataResponsestring)ApiInvoker.deserialize(json,"",DataResponsestring.class);
+        } catch (Exception ex){
+            return new DataResponsestring();
+        }
+    }
 
 }
