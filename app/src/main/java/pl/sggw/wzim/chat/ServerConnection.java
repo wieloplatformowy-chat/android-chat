@@ -21,14 +21,18 @@ public class ServerConnection {
         UserrestcontrollerApi api = new UserrestcontrollerApi();
         UserDto newUser = new UserDto();
 
-
         newUser.setName(name);
         newUser.setPassword(password);
         try {
             BaseResponse serverResponse = api.registerUsingPOST(newUser);
-            return serverResponse.toString();
+            if (serverResponse.getSuccess()){
+                return "success";
+            }
+            else {
+                return serverResponse.getError().getName();
+            }
         } catch (ApiException ex) {
-            return ex.getMessage();
+            return ex.getCode().toString();
         } catch (Exception ex) {
             return ex.getMessage();
         }
@@ -37,13 +41,21 @@ public class ServerConnection {
     public String login(String name, String password) {
         UserrestcontrollerApi api = new UserrestcontrollerApi();
         UserDto user = new UserDto();
+
         user.setName(name);
         user.setPassword(password);
         try {
             DataResponsestring serverResponse = api.loginUsingPOST(user);
-            return serverResponse.toString();
+            return "success";
+
         } catch (ApiException ex) {
-            return ex.getMessage();
+             return ex.getCode().toString();
+        } catch (Exception ex) {
+        return ex.getMessage();
         }
     }
+
+
+
+
 }
