@@ -14,45 +14,25 @@
         android:layout_marginRight="8dp">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/editTextLabel"
         android:text="@string/login_text"
         android:id="@+id/login_text"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"
-        android:textColor="#000" />
+        android:layout_marginTop="0dp" />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/editText"
         android:id="@+id/login_input"
-        android:height="20dp"
-        android:background="#fff"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp" />
+        android:inputType="text" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/editTextLabel"
         android:text="@string/password_text"
-        android:id="@+id/password_text"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="#000" />
+        android:id="@+id/password_text" />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/editText"
         android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/password_input"
-        android:height="20dp"
-        android:background="#fff"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp" />
+        android:id="@+id/password_input" />
 
     </LinearLayout>
 
@@ -63,35 +43,13 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp">
         <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            style="@style/buttonBigMain"
             android:text="@string/login_button_text"
-            android:id="@+id/login_button"
-            android:layout_gravity="center_horizontal"
-            android:clickable="true"
-            android:onClick="login"
-            android:height="40dp"
-            android:textSize="20sp"
-            android:textColor="#fff"
-            android:background="#009688"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:id="@+id/login_button" />
         <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            style="@style/buttonBigRest"
             android:text="@string/register_button_text"
-            android:id="@+id/register_button"
-            android:layout_gravity="center_horizontal"
-            android:clickable="true"
-            android:onClick="changeLayout"
-            android:height="40dp"
-            android:textSize="20sp"
-            android:textColor="#fff"
-            android:background="#727272"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:id="@+id/register_button" />
 
     </LinearLayout>
 </LinearLayout>
