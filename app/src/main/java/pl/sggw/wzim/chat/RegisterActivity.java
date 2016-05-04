@@ -10,36 +10,29 @@ import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText iLogin;
-    EditText iEmail;
-    EditText iPassword;
-    EditText iPassword2;
-
-    String inputLogin = "-";
-    String inputEmail = "-";
-    String inputPassword = "-";
-    String inputPassword2 = "-";
+    private EditText loginEditText;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private EditText password2EditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
-        iLogin = (EditText) findViewById(R.id.login_input);
-        iEmail = (EditText) findViewById(R.id.email_input);
-        iPassword = (EditText) findViewById(R.id.password_input);
-        iPassword2 = (EditText) findViewById(R.id.password2_input);
+        loginEditText = (EditText) findViewById(R.id.login_input);
+        emailEditText = (EditText) findViewById(R.id.email_input);
+        passwordEditText = (EditText) findViewById(R.id.password_input);
+        password2EditText = (EditText) findViewById(R.id.password2_input);
 
-        final Button buttonOne = (Button) findViewById(R.id.register_button);
-        assert buttonOne != null;
+        Button buttonOne = (Button) findViewById(R.id.register_button);
         buttonOne.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 registerButtonClicked();
             }
         });
 
-        final Button buttonTwo = (Button) findViewById(R.id.login_button);
-        assert buttonTwo != null;
+        Button buttonTwo = (Button) findViewById(R.id.login_button);
         buttonTwo.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent toNextPage = new Intent(RegisterActivity.this, LoginActivity.class);
@@ -49,34 +42,35 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     void registerButtonClicked() {
-        inputLogin = stringInput(iLogin, inputLogin);
-        inputEmail = stringInput(iEmail, inputEmail);
-        inputPassword = stringInput(iPassword, inputPassword);
-        inputPassword2 = stringInput(iPassword2, inputPassword2);
+        String loginInput = "-";
+        String emailInput = "-";
+        String passwordInput = "-";
+        String password2Input = "-";
 
-        if(validateEmail(inputEmail) && validatePassword(inputPassword, inputPassword2)) {
-            Toast.makeText(RegisterActivity.this, "Rejestracja: " + inputLogin + ", " + inputEmail + ", " + inputPassword + ", " + inputPassword2,
+        loginInput = readText(loginEditText);
+        emailInput = readText(emailEditText);
+        passwordInput = readText(passwordEditText);
+        password2Input = readText(password2EditText);
+
+        if(validateEmail(emailInput) && validatePassword(passwordInput, password2Input)) {
+            Toast.makeText(RegisterActivity.this, "Rejestracja: " + loginInput + ", " + emailInput + ", " + passwordInput + ", " + password2Input,
                     Toast.LENGTH_LONG).show();
         }
-        else Toast.makeText(RegisterActivity.this, R.string.invalidInput, Toast.LENGTH_LONG).show();
-    }
-
-    String stringInput(EditText et, String s) {
-        if (et.getText().toString().trim().length() > 0) {
-            s = et.getText().toString().trim();
+        else {
+            if(!validateEmail(emailInput)) emailEditText.setError(Integer.toString(R.string.invalidInput));
+            if(!validatePassword(passwordInput, password2Input)) password2EditText.setError(Integer.toString(R.string.invalidInput));
         }
-        return s;
     }
 
-    boolean validateEmail(String s) {
-        boolean b = false;
-        if (s.equals(inputEmail) && s.contains("@")) b = true;
-        return  b;
+    String readText(EditText editText) {
+        return editText.getText().toString().trim();
     }
 
-    boolean validatePassword(String p1, String p2){
-        boolean b = false;
-        if(p1.equals(p2)) b = true;
-        return b;
+    boolean validateEmail(String email) {
+        return email.contains("@");
+    }
+
+    boolean validatePassword(String password1, String password2){
+        return password1.equals(password2);
     }
 }

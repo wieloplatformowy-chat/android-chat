@@ -10,30 +10,26 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText iLogin;
-    EditText iPassword;
-    String inputLogin = "-";
-    String inputPassword = "-";
+    private EditText loginEditText;
+    private EditText passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        iLogin = (EditText)findViewById(R.id.login_input);
-        iPassword = (EditText)findViewById(R.id.password_input);
+        loginEditText = (EditText)findViewById(R.id.login_input);
+        passwordEditText = (EditText)findViewById(R.id.password_input);
 
-        final Button buttonOne = (Button) findViewById(R.id.login_button);
+        Button buttonOne = (Button) findViewById(R.id.login_button);
 
-        assert buttonOne != null;
         buttonOne.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 loginButtonCLicked();
             }
         });
 
-        final Button buttonTwo = (Button) findViewById(R.id.register_button);
-        assert buttonTwo != null;
+        Button buttonTwo = (Button) findViewById(R.id.register_button);
         buttonTwo.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent toNextPage = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -43,17 +39,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void loginButtonCLicked(){
-        inputLogin = stringInput(iLogin, inputLogin);
-        inputPassword = stringInput(iPassword, inputPassword);
+        String loginInput = "-";
+        String passwordInput = "-";
 
-        Toast.makeText(LoginActivity.this, "Logowanie pewnie bedzie kiedys dzialac: " + inputLogin + ", " + inputPassword,
+        loginInput = readText(loginEditText);
+        passwordInput = readText(passwordEditText);
+
+        Toast.makeText(LoginActivity.this, "Logowanie pewnie bedzie kiedys dzialac: " + loginInput + ", " + passwordInput,
                 Toast.LENGTH_LONG).show();
     }
 
-    String stringInput(EditText et, String s){
-        if (et.getText().toString().trim().length() > 0) {
-            s = et.getText().toString().trim();
-        }
-        return s;
+    String readText(EditText editText) {
+        return editText.getText().toString().trim();
     }
 }
