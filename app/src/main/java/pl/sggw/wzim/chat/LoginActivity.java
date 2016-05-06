@@ -21,16 +21,16 @@ public class LoginActivity extends AppCompatActivity {
         loginEditText = (EditText)findViewById(R.id.login_input);
         passwordEditText = (EditText)findViewById(R.id.password_input);
 
-        Button buttonOne = (Button) findViewById(R.id.login_button);
+        Button loginButton = (Button) findViewById(R.id.login_button);
 
-        buttonOne.setOnClickListener(new Button.OnClickListener() {
+        loginButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 loginButtonCLicked();
             }
         });
 
-        Button buttonTwo = (Button) findViewById(R.id.register_button);
-        buttonTwo.setOnClickListener(new Button.OnClickListener() {
+        Button registerButton = (Button) findViewById(R.id.register_button);
+        registerButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent toNextPage = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(toNextPage);
@@ -39,11 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void loginButtonCLicked(){
-        String loginInput = "-";
-        String passwordInput = "-";
-
-        loginInput = readText(loginEditText);
-        passwordInput = readText(passwordEditText);
+        String loginInput = readText(loginEditText);
+        String passwordInput = readText(passwordEditText);
 
         Toast.makeText(LoginActivity.this, "Logowanie pewnie bedzie kiedys dzialac: " + loginInput + ", " + passwordInput,
                 Toast.LENGTH_LONG).show();
