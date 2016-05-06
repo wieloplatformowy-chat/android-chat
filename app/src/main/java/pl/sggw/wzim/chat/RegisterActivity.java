@@ -42,15 +42,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     void registerButtonClicked() {
-        String loginInput = "-";
-        String emailInput = "-";
-        String passwordInput = "-";
-        String password2Input = "-";
-
-        loginInput = readText(loginEditText);
-        emailInput = readText(emailEditText);
-        passwordInput = readText(passwordEditText);
-        password2Input = readText(password2EditText);
+        String loginInput = readText(loginEditText);
+        String emailInput = readText(emailEditText);
+        String passwordInput = readText(passwordEditText);
+        String password2Input = readText(password2EditText);
 
         if(validateEmail(emailInput) && validatePassword(passwordInput, password2Input)) {
             Toast.makeText(RegisterActivity.this, "Rejestracja: " + loginInput + ", " + emailInput + ", " + passwordInput + ", " + password2Input,
