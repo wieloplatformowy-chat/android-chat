@@ -8,7 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class RegisterActivity extends AppCompatActivity {
+import pl.sggw.wzim.chat.swagger.model.RestResponse;
+
+public class RegisterActivity extends AppCompatActivity implements ServerConnection.PostRegistrationCallback{
 
     private EditText loginEditText;
     private EditText emailEditText;
@@ -48,8 +50,9 @@ public class RegisterActivity extends AppCompatActivity {
         String password2Input = readText(password2EditText);
 
         if(validateEmail(emailInput) && validatePassword(passwordInput, password2Input)) {
-            Toast.makeText(RegisterActivity.this, "Rejestracja: " + loginInput + ", " + emailInput + ", " + passwordInput + ", " + password2Input,
-                    Toast.LENGTH_LONG).show();
+
+            ServerConnection.getInstance().register(RegisterActivity.this, emailInput, loginInput, password2Input);
+            ((Button)findViewById(R.id.register_button)).setEnabled(false);
         }
         else {
             if(!validateEmail(emailInput)) emailEditText.setError(Integer.toString(R.string.invalidInput));
@@ -67,5 +70,20 @@ public class RegisterActivity extends AppCompatActivity {
 
     boolean validatePassword(String password1, String password2){
         return password1.equals(password2);
+    }
+
+    @Override
+    public void onRegistrationSuccess(String message) {
+        Toast.makeText(RegisterActivity.this, message,
+                Toast.LENGTH_LONG).show();
+        ((Button)findViewById(R.id.register_button)).setEnabled(true);
+        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+    }
+
+    @Override
+    public void onRegistrationFail(String message) {
+        Toast.makeText(RegisterActivity.this, message,
+                Toast.LENGTH_LONG).show();
+        ((Button)findViewById(R.id.register_button)).setEnabled(true);
     }
 }

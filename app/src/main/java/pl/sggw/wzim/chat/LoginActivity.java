@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements ServerConnection.PostLoginCallback {
 
     private EditText loginEditText;
     private EditText passwordEditText;
@@ -42,11 +42,25 @@ public class LoginActivity extends AppCompatActivity {
         String loginInput = readText(loginEditText);
         String passwordInput = readText(passwordEditText);
 
-        Toast.makeText(LoginActivity.this, "Logowanie pewnie bedzie kiedys dzialac: " + loginInput + ", " + passwordInput,
-                Toast.LENGTH_LONG).show();
+        ServerConnection.getInstance().login(LoginActivity.this,loginInput,passwordInput);
+        ((Button)findViewById(R.id.login_button)).setEnabled(false);
     }
 
     String readText(EditText editText) {
         return editText.getText().toString().trim();
+    }
+
+    @Override
+    public void onLoginSuccess(String token, String message) {
+        Toast.makeText(LoginActivity.this, message,
+                Toast.LENGTH_LONG).show();
+        ((Button)findViewById(R.id.login_button)).setEnabled(true);
+    }
+
+    @Override
+    public void onLoginFail(String message) {
+        Toast.makeText(LoginActivity.this, message,
+                Toast.LENGTH_SHORT).show();
+                ((Button) findViewById(R.id.login_button)).setEnabled(true);
     }
 }
