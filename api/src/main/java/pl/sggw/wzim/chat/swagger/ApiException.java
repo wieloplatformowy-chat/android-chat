@@ -1,7 +1,7 @@
 package pl.sggw.wzim.chat.swagger;
 
 public class ApiException extends Exception {
-  Integer code = 0;
+  int code = 0;
   String message = null;
 
   public ApiException() {}
@@ -11,11 +11,11 @@ public class ApiException extends Exception {
     this.message = message;
   }
 
-  public Integer getCode() {
+  public int getCode() {
     return code;
   }
   
-  public void setCode(Integer code) {
+  public void setCode(int code) {
     this.code = code;
   }
   

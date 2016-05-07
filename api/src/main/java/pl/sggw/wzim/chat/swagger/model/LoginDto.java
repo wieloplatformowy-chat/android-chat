@@ -6,25 +6,12 @@ import com.google.gson.annotations.SerializedName;
 
 
 @ApiModel(description = "")
-public class UserDto  {
+public class LoginDto  {
   
-  @SerializedName("email")
-  private String email = null;
   @SerializedName("name")
   private String name = null;
   @SerializedName("password")
   private String password = null;
-
-  
-  /**
-   **/
-  @ApiModelProperty(required = true, value = "")
-  public String getEmail() {
-    return email;
-  }
-  public void setEmail(String email) {
-    this.email = email;
-  }
 
   
   /**
@@ -53,9 +40,8 @@ public class UserDto  {
   @Override
   public String toString()  {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UserDto {\n");
+    sb.append("class LoginDto {\n");
     
-    sb.append("  email: ").append(email).append("\n");
     sb.append("  name: ").append(name).append("\n");
     sb.append("  password: ").append(password).append("\n");
     sb.append("}\n");

@@ -6,19 +6,30 @@ import com.google.gson.annotations.SerializedName;
 
 
 @ApiModel(description = "")
-public class UserEntity  {
+public class UserWithoutPasswordDto  {
   
+  @SerializedName("email")
+  private String email = null;
   @SerializedName("id")
   private Long id = null;
   @SerializedName("name")
   private String name = null;
-  @SerializedName("password")
-  private String password = null;
 
   
   /**
    **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  public String getEmail() {
+    return email;
+  }
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  
+  /**
+   **/
+  @ApiModelProperty(required = true, value = "")
   public Long getId() {
     return id;
   }
@@ -29,7 +40,7 @@ public class UserEntity  {
   
   /**
    **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
   public String getName() {
     return name;
   }
@@ -38,26 +49,15 @@ public class UserEntity  {
   }
 
   
-  /**
-   **/
-  @ApiModelProperty(value = "")
-  public String getPassword() {
-    return password;
-  }
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  
 
   @Override
   public String toString()  {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UserEntity {\n");
+    sb.append("class UserWithoutPasswordDto {\n");
     
+    sb.append("  email: ").append(email).append("\n");
     sb.append("  id: ").append(id).append("\n");
     sb.append("  name: ").append(name).append("\n");
-    sb.append("  password: ").append(password).append("\n");
     sb.append("}\n");
     return sb.toString();
   }

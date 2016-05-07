@@ -19,7 +19,7 @@ public class ServerConnection {
     }
 
 
-    public BaseResponse register(String name, String password) {
+    public RestResponse registerUsingPOST(String name, String password) {
         UserrestcontrollerApi api = new UserrestcontrollerApi();
         UserDto newUser = new UserDto();
 
@@ -28,60 +28,24 @@ public class ServerConnection {
         try {
             return api.registerUsingPOST(newUser);
         } catch (ApiException ex) {
-          return getBaseResponsFromJSON(ex.getMessage());
-        } catch (Exception ex) {
-            BaseResponse exceptionalResponse = new BaseResponse();
-            ResponseError exceptionalError = new ResponseError();
-
-            exceptionalError.setId(-770);
-            exceptionalError.setName(ex.toString());
-            exceptionalError.setMessage(ex.getMessage());
-
-            exceptionalResponse.setError(exceptionalError);
-            exceptionalResponse.setSuccess(false);
-            return new BaseResponse();
+            RestResponse exceptionResponse = new RestResponse();
+            exceptionResponse.setResponse(ex.getMessage());
+            return exceptionResponse;
         }
     }
 
-    public DataResponsestring login(String name, String password) {
+    public TokenDto login(String name, String password) {
         UserrestcontrollerApi api = new UserrestcontrollerApi();
-        UserDto user = new UserDto();
+        LoginDto user = new LoginDto();
 
         user.setName(name);
         user.setPassword(password);
         try {
             return api.loginUsingPOST(user);
         } catch (ApiException ex) {
-             return getDataResponsestringFromJSON(ex.getMessage());
-        } catch (Exception ex) {
-            DataResponsestring exceptionalResponse = new DataResponsestring();
-            ResponseError exceptionalError = new ResponseError();
-
-            exceptionalError.setId(-770);
-            exceptionalError.setName(ex.toString());
-            exceptionalError.setMessage(ex.getMessage());
-
-            exceptionalResponse.setError(exceptionalError);
-            exceptionalResponse.setSuccess(false);
-
-            return exceptionalResponse;
+            return null;
         }
     }
 
-    private BaseResponse getBaseResponsFromJSON(String json) {
-        try {
-            return (BaseResponse)ApiInvoker.deserialize(json,"",BaseResponse.class);
-        } catch (Exception ex){
-            return new BaseResponse();
-        }
-    }
-
-    private DataResponsestring getDataResponsestringFromJSON(String json){
-        try {
-            return (DataResponsestring)ApiInvoker.deserialize(json,"",DataResponsestring.class);
-        } catch (Exception ex){
-            return new DataResponsestring();
-        }
-    }
 
 }

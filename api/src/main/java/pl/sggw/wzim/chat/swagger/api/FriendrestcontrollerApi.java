@@ -8,8 +8,10 @@ import pl.sggw.wzim.chat.swagger.model.*;
 
 import java.util.*;
 
-import pl.sggw.wzim.chat.swagger.model.DataResponsestring;
-import pl.sggw.wzim.chat.swagger.model.DataResponseUserEntity;
+import pl.sggw.wzim.chat.swagger.model.UserWithoutPasswordDto;
+import pl.sggw.wzim.chat.swagger.model.ResponseError;
+import pl.sggw.wzim.chat.swagger.model.RestResponse;
+import pl.sggw.wzim.chat.swagger.model.IdDto;
 
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 
@@ -17,8 +19,8 @@ import java.util.Map;
 import java.util.HashMap;
 import java.io.File;
 
-public class TokenrestcontrollerApi {
-  String basePath = "http://chatbackend-chat22.rhcloud.com:80/";
+public class FriendrestcontrollerApi {
+  String basePath = "https://chatbackend-chat22.rhcloud.com:80/";
   ApiInvoker apiInvoker = ApiInvoker.getInstance();
 
   public void addHeader(String key, String value) {
@@ -39,16 +41,17 @@ public class TokenrestcontrollerApi {
 
   
   /**
-   * checkToken
+   * Lists all friends of logged user
    * 
-   * @return DataResponsestring
+   * @param xAuthToken Authorization token
+   * @return List<UserWithoutPasswordDto>
    */
-  public DataResponsestring  checkTokenUsingGET () throws ApiException {
+  public List<UserWithoutPasswordDto>  myUsingGET (String xAuthToken) throws ApiException {
     Object localVarPostBody = null;
     
 
     // create path and map variables
-    String localVarPath = "/token/check".replaceAll("\\{format\\}","json");
+    String localVarPath = "/friends/my".replaceAll("\\{format\\}","json");
 
     // query params
     List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -59,6 +62,8 @@ public class TokenrestcontrollerApi {
 
     
 
+    
+    localVarHeaderParams.put("X-Auth-Token", ApiInvoker.parameterToString(xAuthToken));
     
 
     String[] localVarContentTypes = {
@@ -80,7 +85,7 @@ public class TokenrestcontrollerApi {
     try {
       String localVarResponse = apiInvoker.invokeAPI(basePath, localVarPath, "GET", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarContentType);
       if(localVarResponse != null){
-        return (DataResponsestring) ApiInvoker.deserialize(localVarResponse, "", DataResponsestring.class);
+        return (List<UserWithoutPasswordDto>) ApiInvoker.deserialize(localVarResponse, "array", UserWithoutPasswordDto.class);
       }
       else {
         return null;
@@ -91,16 +96,23 @@ public class TokenrestcontrollerApi {
   }
   
   /**
-   * version
+   * Adds friend for logged user
    * 
-   * @return String
+   * @param idDto idDto
+   * @param xAuthToken Authorization token
+   * @return RestResponse
    */
-  public String  versionUsingPATCH () throws ApiException {
-    Object localVarPostBody = null;
+  public RestResponse  registerUsingPOST (IdDto idDto, String xAuthToken) throws ApiException {
+    Object localVarPostBody = idDto;
+    
+    // verify the required parameter 'idDto' is set
+    if (idDto == null) {
+       throw new ApiException(400, "Missing the required parameter 'idDto' when calling registerUsingPOST");
+    }
     
 
     // create path and map variables
-    String localVarPath = "/token/version".replaceAll("\\{format\\}","json");
+    String localVarPath = "/friends/add".replaceAll("\\{format\\}","json");
 
     // query params
     List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -111,6 +123,8 @@ public class TokenrestcontrollerApi {
 
     
 
+    
+    localVarHeaderParams.put("X-Auth-Token", ApiInvoker.parameterToString(xAuthToken));
     
 
     String[] localVarContentTypes = {
@@ -130,61 +144,9 @@ public class TokenrestcontrollerApi {
     }
 
     try {
-      String localVarResponse = apiInvoker.invokeAPI(basePath, localVarPath, "PATCH", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarContentType);
+      String localVarResponse = apiInvoker.invokeAPI(basePath, localVarPath, "POST", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarContentType);
       if(localVarResponse != null){
-        return (String) ApiInvoker.deserialize(localVarResponse, "", String.class);
-      }
-      else {
-        return null;
-      }
-    } catch (ApiException ex) {
-      throw ex;
-    }
-  }
-  
-  /**
-   * whoAmI
-   * 
-   * @return DataResponseUserEntity
-   */
-  public DataResponseUserEntity  whoAmIUsingGET () throws ApiException {
-    Object localVarPostBody = null;
-    
-
-    // create path and map variables
-    String localVarPath = "/token/whoami".replaceAll("\\{format\\}","json");
-
-    // query params
-    List<Pair> localVarQueryParams = new ArrayList<Pair>();
-    // header params
-    Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-    // form params
-    Map<String, String> localVarFormParams = new HashMap<String, String>();
-
-    
-
-    
-
-    String[] localVarContentTypes = {
-      "application/json"
-    };
-    String localVarContentType = localVarContentTypes.length > 0 ? localVarContentTypes[0] : "application/json";
-
-    if (localVarContentType.startsWith("multipart/form-data")) {
-      // file uploading
-      MultipartEntityBuilder localVarBuilder = MultipartEntityBuilder.create();
-      
-
-      localVarPostBody = localVarBuilder.build();
-    } else {
-      // normal form params
-      
-    }
-
-    try {
-      String localVarResponse = apiInvoker.invokeAPI(basePath, localVarPath, "GET", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarContentType);
-      if(localVarResponse != null){
-        return (DataResponseUserEntity) ApiInvoker.deserialize(localVarResponse, "", DataResponseUserEntity.class);
+        return (RestResponse) ApiInvoker.deserialize(localVarResponse, "", RestResponse.class);
       }
       else {
         return null;

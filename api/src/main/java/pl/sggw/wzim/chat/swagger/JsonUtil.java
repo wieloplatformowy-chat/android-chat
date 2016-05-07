@@ -35,28 +35,40 @@ public class JsonUtil {
   public static Type getListTypeForDeserialization(Class cls) {
     String className = cls.getSimpleName();
     
-    if ("BaseResponse".equalsIgnoreCase(className)) {
-      return new TypeToken<List<BaseResponse>>(){}.getType();
+    if ("IdDto".equalsIgnoreCase(className)) {
+      return new TypeToken<List<IdDto>>(){}.getType();
     }
     
-    if ("DataResponseUserEntity".equalsIgnoreCase(className)) {
-      return new TypeToken<List<DataResponseUserEntity>>(){}.getType();
+    if ("LoginDto".equalsIgnoreCase(className)) {
+      return new TypeToken<List<LoginDto>>(){}.getType();
     }
     
-    if ("DataResponsestring".equalsIgnoreCase(className)) {
-      return new TypeToken<List<DataResponsestring>>(){}.getType();
+    if ("PasswordDto".equalsIgnoreCase(className)) {
+      return new TypeToken<List<PasswordDto>>(){}.getType();
     }
     
     if ("ResponseError".equalsIgnoreCase(className)) {
       return new TypeToken<List<ResponseError>>(){}.getType();
     }
     
+    if ("RestResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<List<RestResponse>>(){}.getType();
+    }
+    
+    if ("SearchUserDto".equalsIgnoreCase(className)) {
+      return new TypeToken<List<SearchUserDto>>(){}.getType();
+    }
+    
+    if ("TokenDto".equalsIgnoreCase(className)) {
+      return new TypeToken<List<TokenDto>>(){}.getType();
+    }
+    
     if ("UserDto".equalsIgnoreCase(className)) {
       return new TypeToken<List<UserDto>>(){}.getType();
     }
     
-    if ("UserEntity".equalsIgnoreCase(className)) {
-      return new TypeToken<List<UserEntity>>(){}.getType();
+    if ("UserWithoutPasswordDto".equalsIgnoreCase(className)) {
+      return new TypeToken<List<UserWithoutPasswordDto>>(){}.getType();
     }
     
     return new TypeToken<List<Object>>(){}.getType();
@@ -65,28 +77,40 @@ public class JsonUtil {
   public static Type getTypeForDeserialization(Class cls) {
     String className = cls.getSimpleName();
     
-    if ("BaseResponse".equalsIgnoreCase(className)) {
-      return new TypeToken<BaseResponse>(){}.getType();
+    if ("IdDto".equalsIgnoreCase(className)) {
+      return new TypeToken<IdDto>(){}.getType();
     }
     
-    if ("DataResponseUserEntity".equalsIgnoreCase(className)) {
-      return new TypeToken<DataResponseUserEntity>(){}.getType();
+    if ("LoginDto".equalsIgnoreCase(className)) {
+      return new TypeToken<LoginDto>(){}.getType();
     }
     
-    if ("DataResponsestring".equalsIgnoreCase(className)) {
-      return new TypeToken<DataResponsestring>(){}.getType();
+    if ("PasswordDto".equalsIgnoreCase(className)) {
+      return new TypeToken<PasswordDto>(){}.getType();
     }
     
     if ("ResponseError".equalsIgnoreCase(className)) {
       return new TypeToken<ResponseError>(){}.getType();
     }
     
+    if ("RestResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<RestResponse>(){}.getType();
+    }
+    
+    if ("SearchUserDto".equalsIgnoreCase(className)) {
+      return new TypeToken<SearchUserDto>(){}.getType();
+    }
+    
+    if ("TokenDto".equalsIgnoreCase(className)) {
+      return new TypeToken<TokenDto>(){}.getType();
+    }
+    
     if ("UserDto".equalsIgnoreCase(className)) {
       return new TypeToken<UserDto>(){}.getType();
     }
     
-    if ("UserEntity".equalsIgnoreCase(className)) {
-      return new TypeToken<UserEntity>(){}.getType();
+    if ("UserWithoutPasswordDto".equalsIgnoreCase(className)) {
+      return new TypeToken<UserWithoutPasswordDto>(){}.getType();
     }
     
     return new TypeToken<Object>(){}.getType();
