@@ -8,7 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity implements ServerConnection.PostLoginCallback {
+import pl.sggw.wzim.chat.server.tasks.LoginTask;
+import pl.sggw.wzim.chat.server.ServerConnection;
+
+public class LoginActivity extends AppCompatActivity implements LoginTask.PostLoginCallback {
 
     private EditText loginEditText;
     private EditText passwordEditText;

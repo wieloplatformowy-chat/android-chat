@@ -8,9 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import pl.sggw.wzim.chat.swagger.model.RestResponse;
+import pl.sggw.wzim.chat.server.ServerConnection;
+import pl.sggw.wzim.chat.server.tasks.RegisterTask;
 
-public class RegisterActivity extends AppCompatActivity implements ServerConnection.PostRegistrationCallback{
+public class RegisterActivity extends AppCompatActivity implements RegisterTask.PostRegistrationCallback{
 
     private EditText loginEditText;
     private EditText emailEditText;

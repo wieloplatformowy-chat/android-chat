@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.*;
 import java.util.Random;
 
+import pl.sggw.wzim.chat.server.ServerConnection;
+
 public class LoginRegistrationTest {
 
     ServerConnection serverConnection;
