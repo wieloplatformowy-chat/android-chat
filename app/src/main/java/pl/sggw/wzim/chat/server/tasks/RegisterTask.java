@@ -68,7 +68,7 @@ import pl.sggw.wzim.chat.swagger.model.UserDto;
 
         private int errorID;
 
-        private RegisterError(int ID){
+        RegisterError(int ID){
             errorID = ID;
         }
 

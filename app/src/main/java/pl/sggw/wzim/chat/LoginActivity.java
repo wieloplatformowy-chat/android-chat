@@ -55,9 +55,10 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.PostLo
 
     @Override
     public void onLoginSuccess() {
-        Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_success),
+        Toast.makeText(LoginActivity.this, getString(R.string.login_success),
                 Toast.LENGTH_LONG).show();
         findViewById(R.id.login_button).setEnabled(true);
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
     }
 
     @Override
@@ -65,11 +66,11 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.PostLo
         String message = "";
 
         switch (error){
-            case UNKNOWN_ERROR: message = getResources().getString(R.string.unknown_error);
+            case UNKNOWN_ERROR: message = getString(R.string.unknown_error);
                 break;
-            case USER_NOT_EXISTS: message = getResources().getString(R.string.user_not_exists);
+            case USER_NOT_EXISTS: message = getString(R.string.user_not_exists);
                 break;
-            case INVALID_PASSWORD: message = getResources().getString(R.string.invalid_password);
+            case INVALID_PASSWORD: message = getString(R.string.invalid_password);
                 break;
         }
         Toast.makeText(LoginActivity.this, message,

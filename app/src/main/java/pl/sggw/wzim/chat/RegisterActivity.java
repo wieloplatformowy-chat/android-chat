@@ -85,9 +85,9 @@ public class RegisterActivity extends AppCompatActivity implements RegisterTask.
         String message = "";
 
         switch (error){
-            case UNKNOWN_ERROR: message = getResources().getString(R.string.unknown_error);
+            case UNKNOWN_ERROR: message = getString(R.string.unknown_error);
                 break;
-            case USERNAME_IS_TAKEN: message = getResources().getString(R.string.username_taken);
+            case USERNAME_IS_TAKEN: message = getString(R.string.username_taken);
                 break;
         }
 

@@ -68,7 +68,7 @@ public class LoginTask extends AsyncTask<Void, Void, Void> {
 
         private int errorID;
 
-        private LoginError(int ID){
+        LoginError(int ID){
             errorID = ID;
         }
 

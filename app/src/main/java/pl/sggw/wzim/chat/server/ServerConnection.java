@@ -1,13 +1,8 @@
 package pl.sggw.wzim.chat.server;
 
-import android.os.AsyncTask;
-
-import java.lang.ref.WeakReference;
 
 import pl.sggw.wzim.chat.server.tasks.*;
-import pl.sggw.wzim.chat.swagger.*;
 import pl.sggw.wzim.chat.swagger.model.*;
-import pl.sggw.wzim.chat.swagger.api.*;
 
 /**
  * @author Patryk Konieczny
