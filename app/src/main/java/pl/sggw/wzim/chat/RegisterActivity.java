@@ -8,7 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class RegisterActivity extends AppCompatActivity {
+import pl.sggw.wzim.chat.server.ServerConnection;
+import pl.sggw.wzim.chat.server.tasks.RegisterTask;
+
+public class RegisterActivity extends AppCompatActivity implements RegisterTask.PostRegistrationCallback{
 
     private EditText loginEditText;
     private EditText emailEditText;
@@ -48,12 +51,12 @@ public class RegisterActivity extends AppCompatActivity {
         String password2Input = readText(password2EditText);
 
         if(validateEmail(emailInput) && validatePassword(passwordInput, password2Input)) {
-            Toast.makeText(RegisterActivity.this, "Rejestracja: " + loginInput + ", " + emailInput + ", " + passwordInput + ", " + password2Input,
-                    Toast.LENGTH_LONG).show();
+            ServerConnection.getInstance().register(RegisterActivity.this, emailInput, loginInput, password2Input);
+            findViewById(R.id.register_button).setEnabled(false);
         }
         else {
-            if(!validateEmail(emailInput)) emailEditText.setError(Integer.toString(R.string.invalidInput));
-            if(!validatePassword(passwordInput, password2Input)) password2EditText.setError(Integer.toString(R.string.invalidInput));
+            if(!validateEmail(emailInput)) emailEditText.setError(getString(R.string.invalidInput));
+            if(!validatePassword(passwordInput, password2Input)) password2EditText.setError(getString(R.string.invalidInput));
         }
     }
 
@@ -67,5 +70,29 @@ public class RegisterActivity extends AppCompatActivity {
 
     boolean validatePassword(String password1, String password2){
         return password1.equals(password2);
+    }
+
+    @Override
+    public void onRegistrationSuccess() {
+        Toast.makeText(RegisterActivity.this, getResources().getString(R.string.register_success),
+                Toast.LENGTH_LONG).show();
+        findViewById(R.id.register_button).setEnabled(true);
+        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+    }
+
+    @Override
+    public void onRegistrationFail(RegisterTask.RegisterError error) {
+        String message = "";
+
+        switch (error){
+            case UNKNOWN_ERROR: message = getString(R.string.unknown_error);
+                break;
+            case USERNAME_IS_TAKEN: message = getString(R.string.username_taken);
+                break;
+        }
+
+        Toast.makeText(RegisterActivity.this, message,
+                Toast.LENGTH_LONG).show();
+        findViewById(R.id.register_button).setEnabled(true);
     }
 }

@@ -14,4 +14,12 @@
     <string name="email_text">E-mail</string>
 
     <string name="invalidInput">Wprowadzone dane są nieprawidłowe</string>
+
+    <string name="register_success">Zarejestrowano pomyślnie.</string>
+    <string name="unknown_error">Nieznany błąd.</string>
+    <string name="username_taken">Użytkownik o takiej nazwie już istnieje.</string>
+
+    <string name="login_success">Zalogowano pomyślnie.</string>
+    <string name="user_not_exists">Użytkownik o takiej nazwie nie istnieje!</string>
+    <string name="invalid_password">Podane hasło jest nieprawidłowe.</string>
 </resources>
