@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.PostLo
         String passwordInput = readText(passwordEditText);
 
         ServerConnection.getInstance().login(LoginActivity.this,loginInput,passwordInput);
-        ((Button)findViewById(R.id.login_button)).setEnabled(false);
+        findViewById(R.id.login_button).setEnabled(false);
     }
 
     String readText(EditText editText) {
@@ -54,16 +54,26 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.PostLo
     }
 
     @Override
-    public void onLoginSuccess(String token, String message) {
-        Toast.makeText(LoginActivity.this, message,
+    public void onLoginSuccess() {
+        Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_success),
                 Toast.LENGTH_LONG).show();
-        ((Button)findViewById(R.id.login_button)).setEnabled(true);
+        findViewById(R.id.login_button).setEnabled(true);
     }
 
     @Override
-    public void onLoginFail(String message) {
+    public void onLoginFail(LoginTask.LoginError error) {
+        String message = "";
+
+        switch (error){
+            case UNKNOWN_ERROR: message = getResources().getString(R.string.unknown_error);
+                break;
+            case USER_NOT_EXISTS: message = getResources().getString(R.string.user_not_exists);
+                break;
+            case INVALID_PASSWORD: message = getResources().getString(R.string.invalid_password);
+                break;
+        }
         Toast.makeText(LoginActivity.this, message,
                 Toast.LENGTH_SHORT).show();
-                ((Button) findViewById(R.id.login_button)).setEnabled(true);
+        findViewById(R.id.login_button).setEnabled(true);
     }
 }

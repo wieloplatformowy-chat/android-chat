@@ -2,8 +2,11 @@ package pl.sggw.wzim.chat.server.tasks;
 
 import android.os.AsyncTask;
 
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 
+import pl.sggw.wzim.chat.server.ServerConnection;
 import pl.sggw.wzim.chat.swagger.ApiException;
 import pl.sggw.wzim.chat.swagger.api.UserrestcontrollerApi;
 import pl.sggw.wzim.chat.swagger.model.LoginDto;
@@ -12,44 +15,70 @@ import pl.sggw.wzim.chat.swagger.model.LoginDto;
  * @author Patryk Konieczny
  * @since 07.05.2016
  */
-public  class LoginTask extends AsyncTask<String, Void, String> {
+public class LoginTask extends AsyncTask<Void, Void, Void> {
 
     private WeakReference<PostLoginCallback> mCallback;
-    private String result;
+    private String userName;
+    private String userPassword;
+
+
+    private int errorCode;
     private boolean loginSuccess = false;
 
-    public LoginTask(PostLoginCallback callback){
+    public LoginTask(PostLoginCallback callback, String name, String password){
         mCallback = new WeakReference<>(callback);
+        userName = name;
+        userPassword = password;
     }
 
-    protected String doInBackground(String... userData){
+    protected Void doInBackground(Void... params){
         UserrestcontrollerApi api = new UserrestcontrollerApi();
         LoginDto user = new LoginDto();
 
-        user.setName(userData[0]);
-        user.setPassword(userData[1]);
+        user.setName(userName);
+        user.setPassword(userPassword);
         try {
-            result = api.loginUsingPOST(user).getToken();
+            ServerConnection.getInstance().setUserToken(api.loginUsingPOST(user));
             loginSuccess = true;
         } catch (ApiException ex) {
-            result = ex.getMessage();
-        } catch (Exception ex) {
-            result = ex.getMessage();
+            JSONObject exceptionResponse = new JSONObject(ex.getMessage());
+            errorCode = exceptionResponse.getInt("id");
         } finally {
-            return result;
+            return null;
         }
     }
 
-    protected void onPostExecute(String loginResult) {
+    protected void onPostExecute(Void result) {
         PostLoginCallback callback = mCallback.get();
         if (callback == null) return;
 
-        if (loginSuccess) callback.onLoginSuccess(result, "Zalogowano pomyślnie.");
-        else callback.onLoginFail(result);
+        if (loginSuccess) callback.onLoginSuccess();
+        else callback.onLoginFail(LoginError.fromErrorID(errorCode));
     }
 
     public interface PostLoginCallback {
-        void onLoginSuccess(String token, String message);
-        void onLoginFail(String message);
+        void onLoginSuccess();
+        void onLoginFail(LoginError error);
+    }
+
+    public enum LoginError{
+        UNKNOWN_ERROR(1),
+        USER_NOT_EXISTS(101),
+        INVALID_PASSWORD(102);
+
+        private int errorID;
+
+        private LoginError(int ID){
+            errorID = ID;
+        }
+
+        public static LoginError fromErrorID(int ID){
+            switch (ID){
+                case 1: return UNKNOWN_ERROR;
+                case 101: return USER_NOT_EXISTS;
+                case 102: return INVALID_PASSWORD;
+                default: return UNKNOWN_ERROR;
+            }
+        }
     }
 }

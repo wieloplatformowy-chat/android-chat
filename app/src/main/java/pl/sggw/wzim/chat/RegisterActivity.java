@@ -51,9 +51,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterTask.
         String password2Input = readText(password2EditText);
 
         if(validateEmail(emailInput) && validatePassword(passwordInput, password2Input)) {
-
             ServerConnection.getInstance().register(RegisterActivity.this, emailInput, loginInput, password2Input);
-            ((Button)findViewById(R.id.register_button)).setEnabled(false);
+            findViewById(R.id.register_button).setEnabled(false);
         }
         else {
             if(!validateEmail(emailInput)) emailEditText.setError(Integer.toString(R.string.invalidInput));
@@ -74,17 +73,26 @@ public class RegisterActivity extends AppCompatActivity implements RegisterTask.
     }
 
     @Override
-    public void onRegistrationSuccess(String message) {
-        Toast.makeText(RegisterActivity.this, message,
+    public void onRegistrationSuccess() {
+        Toast.makeText(RegisterActivity.this, getResources().getString(R.string.register_success),
                 Toast.LENGTH_LONG).show();
-        ((Button)findViewById(R.id.register_button)).setEnabled(true);
+        findViewById(R.id.register_button).setEnabled(true);
         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
     }
 
     @Override
-    public void onRegistrationFail(String message) {
+    public void onRegistrationFail(RegisterTask.RegisterError error) {
+        String message = "";
+
+        switch (error){
+            case UNKNOWN_ERROR: message = getResources().getString(R.string.unknown_error);
+                break;
+            case USERNAME_IS_TAKEN: message = getResources().getString(R.string.username_taken);
+                break;
+        }
+
         Toast.makeText(RegisterActivity.this, message,
                 Toast.LENGTH_LONG).show();
-        ((Button)findViewById(R.id.register_button)).setEnabled(true);
+        findViewById(R.id.register_button).setEnabled(true);
     }
 }
