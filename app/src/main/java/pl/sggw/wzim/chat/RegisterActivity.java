@@ -55,8 +55,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterTask.
             findViewById(R.id.register_button).setEnabled(false);
         }
         else {
-            if(!validateEmail(emailInput)) emailEditText.setError(Integer.toString(R.string.invalidInput));
-            if(!validatePassword(passwordInput, password2Input)) password2EditText.setError(Integer.toString(R.string.invalidInput));
+            if(!validateEmail(emailInput)) emailEditText.setError(getString(R.string.invalidInput));
+            if(!validatePassword(passwordInput, password2Input)) password2EditText.setError(getString(R.string.invalidInput));
         }
     }
 
