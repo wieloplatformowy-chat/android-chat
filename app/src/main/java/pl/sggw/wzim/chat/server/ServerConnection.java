@@ -10,7 +10,7 @@ import pl.sggw.wzim.chat.swagger.model.*;
  */
 public class ServerConnection {
     private static ServerConnection ourInstance = new ServerConnection();
-    private static TokenDto userToken = null;
+    private static TokenResponse userToken = null;
 
     public static ServerConnection getInstance() {
         return ourInstance;
@@ -49,7 +49,7 @@ public class ServerConnection {
      *
      * @param token new user token.
      */
-    public void setUserToken(TokenDto token){
+    public void setUserToken(TokenResponse token){
         userToken = token;
     }
 

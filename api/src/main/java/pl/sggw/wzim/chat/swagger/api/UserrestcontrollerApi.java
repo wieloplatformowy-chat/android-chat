@@ -8,14 +8,13 @@ import pl.sggw.wzim.chat.swagger.model.*;
 
 import java.util.*;
 
-import pl.sggw.wzim.chat.swagger.model.PasswordDto;
-import pl.sggw.wzim.chat.swagger.model.RestResponse;
+import pl.sggw.wzim.chat.swagger.model.LoginParams;
+import pl.sggw.wzim.chat.swagger.model.TokenResponse;
 import pl.sggw.wzim.chat.swagger.model.ResponseError;
-import pl.sggw.wzim.chat.swagger.model.TokenDto;
-import pl.sggw.wzim.chat.swagger.model.LoginDto;
-import pl.sggw.wzim.chat.swagger.model.UserDto;
-import pl.sggw.wzim.chat.swagger.model.UserWithoutPasswordDto;
-import pl.sggw.wzim.chat.swagger.model.SearchUserDto;
+import pl.sggw.wzim.chat.swagger.model.RestResponse;
+import pl.sggw.wzim.chat.swagger.model.RegisterParams;
+import pl.sggw.wzim.chat.swagger.model.UserResponse;
+import pl.sggw.wzim.chat.swagger.model.SearchUserParams;
 
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 
@@ -45,73 +44,12 @@ public class UserrestcontrollerApi {
 
   
   /**
-   * Delete user
-   * throws: UNKNOWN_ERROR, INVALID_JSON
-   * @param restData restData
-   * @param xAuthToken Authorization token
-   * @return RestResponse
-   */
-  public RestResponse  deleteUsingDELETE (PasswordDto restData, String xAuthToken) throws ApiException {
-    Object localVarPostBody = restData;
-    
-    // verify the required parameter 'restData' is set
-    if (restData == null) {
-       throw new ApiException(400, "Missing the required parameter 'restData' when calling deleteUsingDELETE");
-    }
-    
-
-    // create path and map variables
-    String localVarPath = "/user/delete".replaceAll("\\{format\\}","json");
-
-    // query params
-    List<Pair> localVarQueryParams = new ArrayList<Pair>();
-    // header params
-    Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-    // form params
-    Map<String, String> localVarFormParams = new HashMap<String, String>();
-
-    
-
-    
-    localVarHeaderParams.put("X-Auth-Token", ApiInvoker.parameterToString(xAuthToken));
-    
-
-    String[] localVarContentTypes = {
-      "application/json"
-    };
-    String localVarContentType = localVarContentTypes.length > 0 ? localVarContentTypes[0] : "application/json";
-
-    if (localVarContentType.startsWith("multipart/form-data")) {
-      // file uploading
-      MultipartEntityBuilder localVarBuilder = MultipartEntityBuilder.create();
-      
-
-      localVarPostBody = localVarBuilder.build();
-    } else {
-      // normal form params
-      
-    }
-
-    try {
-      String localVarResponse = apiInvoker.invokeAPI(basePath, localVarPath, "DELETE", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarContentType);
-      if(localVarResponse != null){
-        return (RestResponse) ApiInvoker.deserialize(localVarResponse, "", RestResponse.class);
-      }
-      else {
-        return null;
-      }
-    } catch (ApiException ex) {
-      throw ex;
-    }
-  }
-  
-  /**
    * Login user
    * 
    * @param userDto userDto
-   * @return TokenDto
+   * @return TokenResponse
    */
-  public TokenDto  loginUsingPOST (LoginDto userDto) throws ApiException {
+  public TokenResponse  loginUsingPOST (LoginParams userDto) throws ApiException {
     Object localVarPostBody = userDto;
     
     // verify the required parameter 'userDto' is set
@@ -153,7 +91,7 @@ public class UserrestcontrollerApi {
     try {
       String localVarResponse = apiInvoker.invokeAPI(basePath, localVarPath, "POST", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarContentType);
       if(localVarResponse != null){
-        return (TokenDto) ApiInvoker.deserialize(localVarResponse, "", TokenDto.class);
+        return (TokenResponse) ApiInvoker.deserialize(localVarResponse, "", TokenResponse.class);
       }
       else {
         return null;
@@ -221,15 +159,15 @@ public class UserrestcontrollerApi {
   /**
    * Register user
    * 
-   * @param userDto userDto
+   * @param registerParams registerParams
    * @return RestResponse
    */
-  public RestResponse  registerUsingPOST (UserDto userDto) throws ApiException {
-    Object localVarPostBody = userDto;
+  public RestResponse  registerUsingPOST (RegisterParams registerParams) throws ApiException {
+    Object localVarPostBody = registerParams;
     
-    // verify the required parameter 'userDto' is set
-    if (userDto == null) {
-       throw new ApiException(400, "Missing the required parameter 'userDto' when calling registerUsingPOST1");
+    // verify the required parameter 'registerParams' is set
+    if (registerParams == null) {
+       throw new ApiException(400, "Missing the required parameter 'registerParams' when calling registerUsingPOST1");
     }
     
 
@@ -281,9 +219,9 @@ public class UserrestcontrollerApi {
    * 
    * @param search search
    * @param xAuthToken Authorization token
-   * @return List<UserWithoutPasswordDto>
+   * @return List<UserResponse>
    */
-  public List<UserWithoutPasswordDto>  searchUsingPOST (SearchUserDto search, String xAuthToken) throws ApiException {
+  public List<UserResponse>  searchUsingPOST (SearchUserParams search, String xAuthToken) throws ApiException {
     Object localVarPostBody = search;
     
     // verify the required parameter 'search' is set
@@ -327,7 +265,7 @@ public class UserrestcontrollerApi {
     try {
       String localVarResponse = apiInvoker.invokeAPI(basePath, localVarPath, "POST", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarContentType);
       if(localVarResponse != null){
-        return (List<UserWithoutPasswordDto>) ApiInvoker.deserialize(localVarResponse, "array", UserWithoutPasswordDto.class);
+        return (List<UserResponse>) ApiInvoker.deserialize(localVarResponse, "array", UserResponse.class);
       }
       else {
         return null;
@@ -341,9 +279,9 @@ public class UserrestcontrollerApi {
    * Returns user associated with given token
    * 
    * @param xAuthToken Authorization token
-   * @return UserWithoutPasswordDto
+   * @return UserResponse
    */
-  public UserWithoutPasswordDto  whoAmIUsingGET (String xAuthToken) throws ApiException {
+  public UserResponse  whoAmIUsingGET (String xAuthToken) throws ApiException {
     Object localVarPostBody = null;
     
 
@@ -382,7 +320,7 @@ public class UserrestcontrollerApi {
     try {
       String localVarResponse = apiInvoker.invokeAPI(basePath, localVarPath, "GET", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarContentType);
       if(localVarResponse != null){
-        return (UserWithoutPasswordDto) ApiInvoker.deserialize(localVarResponse, "", UserWithoutPasswordDto.class);
+        return (UserResponse) ApiInvoker.deserialize(localVarResponse, "", UserResponse.class);
       }
       else {
         return null;

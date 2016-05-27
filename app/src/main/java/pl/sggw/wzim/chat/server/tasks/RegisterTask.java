@@ -8,6 +8,7 @@ import java.lang.ref.WeakReference;
 
 import pl.sggw.wzim.chat.swagger.ApiException;
 import pl.sggw.wzim.chat.swagger.api.UserrestcontrollerApi;
+import pl.sggw.wzim.chat.swagger.model.RegisterParams;
 import pl.sggw.wzim.chat.swagger.model.UserDto;
 
 /**
@@ -33,7 +34,7 @@ import pl.sggw.wzim.chat.swagger.model.UserDto;
 
     protected Void doInBackground(Void... params) {
         UserrestcontrollerApi api = new UserrestcontrollerApi();
-        UserDto newUser = new UserDto();
+        RegisterParams newUser = new RegisterParams();
 
         newUser.setEmail(userEmail);
         newUser.setName(userName);
