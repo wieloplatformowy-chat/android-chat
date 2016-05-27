@@ -35,16 +35,36 @@ public class JsonUtil {
   public static Type getListTypeForDeserialization(Class cls) {
     String className = cls.getSimpleName();
     
-    if ("IdDto".equalsIgnoreCase(className)) {
-      return new TypeToken<List<IdDto>>(){}.getType();
+    if ("ConversationResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<List<ConversationResponse>>(){}.getType();
     }
     
-    if ("LoginDto".equalsIgnoreCase(className)) {
-      return new TypeToken<List<LoginDto>>(){}.getType();
+    if ("CreateGroupResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<List<CreateGroupResponse>>(){}.getType();
     }
     
-    if ("PasswordDto".equalsIgnoreCase(className)) {
-      return new TypeToken<List<PasswordDto>>(){}.getType();
+    if ("InviteToGroupParams".equalsIgnoreCase(className)) {
+      return new TypeToken<List<InviteToGroupParams>>(){}.getType();
+    }
+    
+    if ("LoginParams".equalsIgnoreCase(className)) {
+      return new TypeToken<List<LoginParams>>(){}.getType();
+    }
+    
+    if ("MessageResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<List<MessageResponse>>(){}.getType();
+    }
+    
+    if ("OnlineResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<List<OnlineResponse>>(){}.getType();
+    }
+    
+    if ("RegisterParams".equalsIgnoreCase(className)) {
+      return new TypeToken<List<RegisterParams>>(){}.getType();
+    }
+    
+    if ("RenameGroupParams".equalsIgnoreCase(className)) {
+      return new TypeToken<List<RenameGroupParams>>(){}.getType();
     }
     
     if ("ResponseError".equalsIgnoreCase(className)) {
@@ -55,20 +75,20 @@ public class JsonUtil {
       return new TypeToken<List<RestResponse>>(){}.getType();
     }
     
-    if ("SearchUserDto".equalsIgnoreCase(className)) {
-      return new TypeToken<List<SearchUserDto>>(){}.getType();
+    if ("SearchUserParams".equalsIgnoreCase(className)) {
+      return new TypeToken<List<SearchUserParams>>(){}.getType();
     }
     
-    if ("TokenDto".equalsIgnoreCase(className)) {
-      return new TypeToken<List<TokenDto>>(){}.getType();
+    if ("SendMessageParams".equalsIgnoreCase(className)) {
+      return new TypeToken<List<SendMessageParams>>(){}.getType();
     }
     
-    if ("UserDto".equalsIgnoreCase(className)) {
-      return new TypeToken<List<UserDto>>(){}.getType();
+    if ("TokenResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<List<TokenResponse>>(){}.getType();
     }
     
-    if ("UserWithoutPasswordDto".equalsIgnoreCase(className)) {
-      return new TypeToken<List<UserWithoutPasswordDto>>(){}.getType();
+    if ("UserResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<List<UserResponse>>(){}.getType();
     }
     
     return new TypeToken<List<Object>>(){}.getType();
@@ -77,16 +97,36 @@ public class JsonUtil {
   public static Type getTypeForDeserialization(Class cls) {
     String className = cls.getSimpleName();
     
-    if ("IdDto".equalsIgnoreCase(className)) {
-      return new TypeToken<IdDto>(){}.getType();
+    if ("ConversationResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<ConversationResponse>(){}.getType();
     }
     
-    if ("LoginDto".equalsIgnoreCase(className)) {
-      return new TypeToken<LoginDto>(){}.getType();
+    if ("CreateGroupResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<CreateGroupResponse>(){}.getType();
     }
     
-    if ("PasswordDto".equalsIgnoreCase(className)) {
-      return new TypeToken<PasswordDto>(){}.getType();
+    if ("InviteToGroupParams".equalsIgnoreCase(className)) {
+      return new TypeToken<InviteToGroupParams>(){}.getType();
+    }
+    
+    if ("LoginParams".equalsIgnoreCase(className)) {
+      return new TypeToken<LoginParams>(){}.getType();
+    }
+    
+    if ("MessageResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<MessageResponse>(){}.getType();
+    }
+    
+    if ("OnlineResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<OnlineResponse>(){}.getType();
+    }
+    
+    if ("RegisterParams".equalsIgnoreCase(className)) {
+      return new TypeToken<RegisterParams>(){}.getType();
+    }
+    
+    if ("RenameGroupParams".equalsIgnoreCase(className)) {
+      return new TypeToken<RenameGroupParams>(){}.getType();
     }
     
     if ("ResponseError".equalsIgnoreCase(className)) {
@@ -97,20 +137,20 @@ public class JsonUtil {
       return new TypeToken<RestResponse>(){}.getType();
     }
     
-    if ("SearchUserDto".equalsIgnoreCase(className)) {
-      return new TypeToken<SearchUserDto>(){}.getType();
+    if ("SearchUserParams".equalsIgnoreCase(className)) {
+      return new TypeToken<SearchUserParams>(){}.getType();
     }
     
-    if ("TokenDto".equalsIgnoreCase(className)) {
-      return new TypeToken<TokenDto>(){}.getType();
+    if ("SendMessageParams".equalsIgnoreCase(className)) {
+      return new TypeToken<SendMessageParams>(){}.getType();
     }
     
-    if ("UserDto".equalsIgnoreCase(className)) {
-      return new TypeToken<UserDto>(){}.getType();
+    if ("TokenResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<TokenResponse>(){}.getType();
     }
     
-    if ("UserWithoutPasswordDto".equalsIgnoreCase(className)) {
-      return new TypeToken<UserWithoutPasswordDto>(){}.getType();
+    if ("UserResponse".equalsIgnoreCase(className)) {
+      return new TypeToken<UserResponse>(){}.getType();
     }
     
     return new TypeToken<Object>(){}.getType();

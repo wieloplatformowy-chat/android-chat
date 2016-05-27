@@ -10,6 +10,7 @@ import pl.sggw.wzim.chat.server.ServerConnection;
 import pl.sggw.wzim.chat.swagger.ApiException;
 import pl.sggw.wzim.chat.swagger.api.UserrestcontrollerApi;
 import pl.sggw.wzim.chat.swagger.model.LoginDto;
+import pl.sggw.wzim.chat.swagger.model.LoginParams;
 
 /**
  * @author Patryk Konieczny
@@ -33,7 +34,7 @@ public class LoginTask extends AsyncTask<Void, Void, Void> {
 
     protected Void doInBackground(Void... params){
         UserrestcontrollerApi api = new UserrestcontrollerApi();
-        LoginDto user = new LoginDto();
+        LoginParams user = new LoginParams();
 
         user.setName(userName);
         user.setPassword(userPassword);
