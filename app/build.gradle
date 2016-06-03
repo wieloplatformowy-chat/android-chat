@@ -41,4 +41,6 @@ dependencies {
     // Support Libraries
     compile "com.android.support:appcompat-v7:$supportLibrary_version"
     compile "com.android.support:design:$supportLibrary_version"
+    compile "com.android.support:support-v4:$supportLibrary_version"
+    compile "com.android.support:recyclerview-v7:$supportLibrary_version"
 }
