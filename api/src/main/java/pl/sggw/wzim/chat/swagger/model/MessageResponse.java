@@ -15,8 +15,8 @@ public class MessageResponse  {
   private Timestamp date = null;
   @SerializedName("id")
   private Long id = null;
-  @SerializedName("messaage")
-  private String messaage = null;
+  @SerializedName("message")
+  private String message = null;
   @SerializedName("userId")
   private Long userId = null;
 
@@ -57,11 +57,11 @@ public class MessageResponse  {
   /**
    **/
   @ApiModelProperty(value = "")
-  public String getMessaage() {
-    return messaage;
+  public String getMessage() {
+    return message;
   }
-  public void setMessaage(String messaage) {
-    this.messaage = messaage;
+  public void setMessage(String message) {
+    this.message = message;
   }
 
   
@@ -85,7 +85,7 @@ public class MessageResponse  {
     sb.append("  conversationId: ").append(conversationId).append("\n");
     sb.append("  date: ").append(date).append("\n");
     sb.append("  id: ").append(id).append("\n");
-    sb.append("  messaage: ").append(messaage).append("\n");
+    sb.append("  message: ").append(message).append("\n");
     sb.append("  userId: ").append(userId).append("\n");
     sb.append("}\n");
     return sb.toString();

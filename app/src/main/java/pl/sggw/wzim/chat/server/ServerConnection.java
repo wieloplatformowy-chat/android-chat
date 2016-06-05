@@ -53,4 +53,25 @@ public class ServerConnection {
         userToken = token;
     }
 
+    /**
+     * Asynchronously tries to get last 20 messages in given conversation.
+     * User must be logged in in order to use this method (otherwise it does nothing).
+     *
+     * @param context callback notified after execution of an api call.
+     * @param conversationID login of user.
+     */
+    public void getLast20Messages(GetMessagesTask.PostGetMessageCallback context, long conversationID) {
+        if (userToken != null) (new GetMessagesTask(context, conversationID, userToken.getToken())).execute();
+    }
+
+    /**
+     * Asynchronously tries to get data of a logged user.
+     * User must be logged in in order to use this method (otherwise it does nothing).
+     *
+     * @param context callback notified after execution of an api call.
+     */
+    public void whoAmI(WhoAmITask.PostWhoAmICallback context){
+        if (userToken != null) (new WhoAmITask(context,userToken.getToken())).execute();
+    }
+
 }
