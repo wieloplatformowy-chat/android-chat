@@ -15,27 +15,24 @@ import pl.sggw.wzim.chat.swagger.model.MessageResponse;
  * @author Patryk Konieczny
  * @since 05.06.2016
  */
-public class GetMessagesTask extends AsyncTask<Void, Void, Void> {
-    private WeakReference<PostGetMessageCallback> mCallback;
-    private long ID;
+public class GetUnreadMessagesTask extends AsyncTask<Void, Void, Void> {
+    private WeakReference<PostGetUnreadMessagesCallback> mCallback;
     private String token;
-    private List<MessageResponse> messages;
+    private List<Long> conversationsID;
 
     private int errorCode;
-    private boolean getMessagesSuccess = false;
+    private boolean getEarlierMessagesSuccess = false;
 
-    public GetMessagesTask(PostGetMessageCallback callback, long conversationID, String authToken){
+    public GetUnreadMessagesTask(PostGetUnreadMessagesCallback callback, String authToken){
         mCallback = new WeakReference<>(callback);
-        ID = conversationID;
         token = authToken;
     }
 
     protected Void doInBackground(Void... params){
         MessagerestcontrollerApi api = new MessagerestcontrollerApi();
-
         try {
-            messages = api.lastUsingGET(ID,token);
-            getMessagesSuccess = true;
+            conversationsID = api.unreadUsingGET(token);
+            getEarlierMessagesSuccess = true;
         } catch (ApiException ex) {
             JSONObject exceptionResponse = new JSONObject(ex.getMessage());
             errorCode = exceptionResponse.getInt("id");
@@ -45,31 +42,30 @@ public class GetMessagesTask extends AsyncTask<Void, Void, Void> {
     }
 
     protected void onPostExecute(Void result) {
-        PostGetMessageCallback callback = mCallback.get();
+        PostGetUnreadMessagesCallback callback = mCallback.get();
         if (callback == null) return;
 
-        if (getMessagesSuccess) callback.onLoginSuccess(messages);
-        else callback.onLoginFail(GetMessagesError.fromErrorID(errorCode));
+        if (getEarlierMessagesSuccess) callback.onGetUnreadMessagesSuccess(conversationsID);
+        else callback.onGetUnreadMessagesFail(GetUnreadMessagesError.fromErrorID(errorCode));
     }
 
-    public interface PostGetMessageCallback {
-        void onLoginSuccess(List<MessageResponse> messages);
-        void onLoginFail(GetMessagesError error);
+    public interface PostGetUnreadMessagesCallback {
+        void onGetUnreadMessagesSuccess(List<Long> conversationsIDs);
+        void onGetUnreadMessagesFail(GetUnreadMessagesError error);
     }
 
-    public enum GetMessagesError{
+    public enum GetUnreadMessagesError {
         UNKNOWN_ERROR(1),
         LOGIN_REQUIRED(105);
 
         private int errorID;
 
-        GetMessagesError(int ID){
+        GetUnreadMessagesError(int ID){
             errorID = ID;
         }
 
-        public static GetMessagesError fromErrorID(int ID){
+        public static GetUnreadMessagesError fromErrorID(int ID){
             switch (ID){
-                case 1: return UNKNOWN_ERROR;
                 case 105: return LOGIN_REQUIRED;
                 default: return UNKNOWN_ERROR;
             }

@@ -5,25 +5,29 @@ import android.os.AsyncTask;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import pl.sggw.wzim.chat.swagger.ApiException;
 import pl.sggw.wzim.chat.swagger.api.UserrestcontrollerApi;
+import pl.sggw.wzim.chat.swagger.model.SearchUserParams;
 import pl.sggw.wzim.chat.swagger.model.UserResponse;
 
 /**
  * @author Patryk Konieczny
  * @since 05.06.2016
  */
-public class WhoAmITask extends AsyncTask<Void, Void, Void> {
-    private WeakReference<PostWhoAmICallback> mCallback;
+public class SearchUserTask extends AsyncTask<Void, Void, Void> {
+    private WeakReference<PostSearchUserCallback> mCallback;
     private String token;
-    private UserResponse theUserIAm;
+    private SearchUserParams searchParams;
+    private List<UserResponse> users;
 
     private int errorCode;
-    private boolean checkWhoAmISuccess = false;
+    private boolean searchUserSuccess = false;
 
-    public WhoAmITask(PostWhoAmICallback callback, String authToken){
+    public SearchUserTask(PostSearchUserCallback callback, SearchUserParams searchedUser, String authToken){
         mCallback = new WeakReference<>(callback);
+        searchParams = searchedUser;
         token = authToken;
     }
 
@@ -31,8 +35,8 @@ public class WhoAmITask extends AsyncTask<Void, Void, Void> {
         UserrestcontrollerApi api = new UserrestcontrollerApi();
 
         try {
-            theUserIAm = api.whoAmIUsingGET(token);
-            checkWhoAmISuccess = true;
+            users = api.searchUsingPOST(searchParams, token);
+            searchUserSuccess = true;
         } catch (ApiException ex) {
             JSONObject exceptionResponse = new JSONObject(ex.getMessage());
             errorCode = exceptionResponse.getInt("id");
@@ -42,30 +46,32 @@ public class WhoAmITask extends AsyncTask<Void, Void, Void> {
     }
 
     protected void onPostExecute(Void result) {
-        PostWhoAmICallback callback = mCallback.get();
+        PostSearchUserCallback callback = mCallback.get();
         if (callback == null) return;
 
-        if (checkWhoAmISuccess) callback.onWhoAmISuccess(theUserIAm);
-        else callback.onWhoAmIFail(WhoAmIError.fromErrorID(errorCode));
+        if (searchUserSuccess) callback.onSearchUserSuccess(users);
+        else callback.onSearchUserFail(SearchUserError.fromErrorID(errorCode));
     }
 
-    public interface PostWhoAmICallback {
-        void onWhoAmISuccess(UserResponse UserData);
-        void onWhoAmIFail(WhoAmIError error);
+    public interface PostSearchUserCallback {
+        void onSearchUserSuccess(List<UserResponse> results);
+        void onSearchUserFail(SearchUserError error);
     }
 
-    public enum WhoAmIError{
+    public enum SearchUserError{
         UNKNOWN_ERROR(1),
+        USER_NOT_EXISTS(101),
         LOGIN_REQUIRED(105);
 
         private int errorID;
 
-        WhoAmIError(int ID){
+        SearchUserError(int ID){
             errorID = ID;
         }
 
-        public static WhoAmIError fromErrorID(int ID){
+        public static SearchUserError fromErrorID(int ID){
             switch (ID){
+                case 101: return USER_NOT_EXISTS;
                 case 105: return LOGIN_REQUIRED;
                 default: return UNKNOWN_ERROR;
             }

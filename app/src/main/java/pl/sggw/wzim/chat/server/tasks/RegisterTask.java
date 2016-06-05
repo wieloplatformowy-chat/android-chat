@@ -75,7 +75,6 @@ import pl.sggw.wzim.chat.swagger.model.UserDto;
 
         public static RegisterError fromErrorID(int ID){
             switch (ID) {
-                case 1: return UNKNOWN_ERROR;
                 case 103: return USERNAME_IS_TAKEN;
                 default: return UNKNOWN_ERROR;
             }

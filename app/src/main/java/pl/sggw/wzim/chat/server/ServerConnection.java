@@ -54,24 +54,92 @@ public class ServerConnection {
     }
 
     /**
-     * Asynchronously tries to get last 20 messages in given conversation.
-     * User must be logged in in order to use this method (otherwise it does nothing).
-     *
-     * @param context callback notified after execution of an api call.
-     * @param conversationID login of user.
-     */
-    public void getLast20Messages(GetMessagesTask.PostGetMessageCallback context, long conversationID) {
-        if (userToken != null) (new GetMessagesTask(context, conversationID, userToken.getToken())).execute();
-    }
-
-    /**
      * Asynchronously tries to get data of a logged user.
-     * User must be logged in in order to use this method (otherwise it does nothing).
+     * User must be logged in in order to use this method (otherwise it calls onWhoAmIFail callback).
      *
      * @param context callback notified after execution of an api call.
      */
     public void whoAmI(WhoAmITask.PostWhoAmICallback context){
         if (userToken != null) (new WhoAmITask(context,userToken.getToken())).execute();
+        else context.onWhoAmIFail(WhoAmITask.WhoAmIError.LOGIN_REQUIRED);
     }
 
+    /**
+     * Asynchronously tries to logout logged user.
+     * User must be logged in in order to use this method (otherwise it calls onLogoutFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     */
+    public void logout(LogoutTask.PostLogoutCallback context){
+        if (userToken != null) (new LogoutTask(context,userToken.getToken())).execute();
+        else context.onLogoutFail(LogoutTask.LogoutError.LOGIN_REQUIRED);
+    }
+
+    /**
+     * Asynchronously tries to find user with given parameters.
+     * User must be logged in in order to use this method (otherwise it calls onSearchUserFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     * @param email email of a searched user.
+     * @param name name of a searched user.
+     */
+    public void searchUser(SearchUserTask.PostSearchUserCallback context, String email, String name) {
+        SearchUserParams userParams = new SearchUserParams();
+        userParams.setEmail(email);
+        userParams.setName(name);
+        if (userToken != null) (new SearchUserTask(context, userParams,userToken.getToken())).execute();
+        else context.onSearchUserFail(SearchUserTask.SearchUserError.LOGIN_REQUIRED);
+    }
+
+    /**
+     * Asynchronously tries to get last 20 messages in given conversation.
+     * User must be logged in in order to use this method (otherwise it calls onGetMessageFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     * @param conversationID ID of conversation, where messages are.
+     */
+    public void getLastMessages(GetLastMessagesTask.PostGetMessageCallback context, long conversationID) {
+        if (userToken != null) (new GetLastMessagesTask(context, conversationID, userToken.getToken())).execute();
+        else context.onGetMessageFail(GetLastMessagesTask.GetMessagesError.LOGIN_REQUIRED);
+    }
+
+    /**
+     * Asynchronously tries to get 20 messages before given message in given conversation.
+     * User must be logged in in order to use this method (otherwise it calls onGetEarlierMessagesFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     * @param lastMessageID ID of message, it will search for messages before this.
+     * @param conversationID ID of conversation, where messages are.
+     */
+    public void getEarlierMessages(GetEarlierMessagesTask.PostGetEarlierMessagesCallback context, long lastMessageID, long conversationID){
+        if (userToken != null) (new GetEarlierMessagesTask(context,lastMessageID, conversationID, userToken.getToken())).execute();
+        else context.onGetEarlierMessagesFail(GetEarlierMessagesTask.GetEarlierMessagesError.LOGIN_REQUIRED);
+    }
+
+    /**
+     * Asynchronously tries to get send message in given conversation.
+     * User must be logged in in order to use this method (otherwise it calls onSendMessageFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     * @param conversationID ID of conversation, where messages are.
+     * @param message content of message
+     */
+    public void SendMessage(SendMessageTask.SendMessageCallback context, long conversationID, String message){
+        SendMessageParams messageParams = new SendMessageParams();
+        messageParams.setConversationId(conversationID);
+        messageParams.setMessage(message);
+        if (userToken != null) (new SendMessageTask(context, messageParams, userToken.getToken())).execute();
+        else context.onSendMessageFail(SendMessageTask.SendMessageError.LOGIN_REQUIRED);
+    }
+
+    /**
+     * Asynchronously tries to get send message in given conversation.
+     * User must be logged in in order to use this method (otherwise it calls onGetUnreadMessagesFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     */
+    public void GetUnreadMessages(GetUnreadMessagesTask.PostGetUnreadMessagesCallback context){
+        if (userToken != null) (new GetUnreadMessagesTask(context, userToken.getToken())).execute();
+        else context.onGetUnreadMessagesFail(GetUnreadMessagesTask.GetUnreadMessagesError.LOGIN_REQUIRED);
+    }
 }

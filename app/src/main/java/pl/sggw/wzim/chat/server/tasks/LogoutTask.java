@@ -8,21 +8,19 @@ import java.lang.ref.WeakReference;
 
 import pl.sggw.wzim.chat.swagger.ApiException;
 import pl.sggw.wzim.chat.swagger.api.UserrestcontrollerApi;
-import pl.sggw.wzim.chat.swagger.model.UserResponse;
 
 /**
  * @author Patryk Konieczny
  * @since 05.06.2016
  */
-public class WhoAmITask extends AsyncTask<Void, Void, Void> {
-    private WeakReference<PostWhoAmICallback> mCallback;
+public class LogoutTask extends AsyncTask<Void, Void, Void> {
+    private WeakReference<PostLogoutCallback> mCallback;
     private String token;
-    private UserResponse theUserIAm;
 
     private int errorCode;
-    private boolean checkWhoAmISuccess = false;
+    private boolean logoutSuccess = false;
 
-    public WhoAmITask(PostWhoAmICallback callback, String authToken){
+    public LogoutTask(PostLogoutCallback callback, String authToken){
         mCallback = new WeakReference<>(callback);
         token = authToken;
     }
@@ -31,8 +29,8 @@ public class WhoAmITask extends AsyncTask<Void, Void, Void> {
         UserrestcontrollerApi api = new UserrestcontrollerApi();
 
         try {
-            theUserIAm = api.whoAmIUsingGET(token);
-            checkWhoAmISuccess = true;
+            api.logoutUsingGET(token);
+            logoutSuccess = true;
         } catch (ApiException ex) {
             JSONObject exceptionResponse = new JSONObject(ex.getMessage());
             errorCode = exceptionResponse.getInt("id");
@@ -42,29 +40,29 @@ public class WhoAmITask extends AsyncTask<Void, Void, Void> {
     }
 
     protected void onPostExecute(Void result) {
-        PostWhoAmICallback callback = mCallback.get();
+        PostLogoutCallback callback = mCallback.get();
         if (callback == null) return;
 
-        if (checkWhoAmISuccess) callback.onWhoAmISuccess(theUserIAm);
-        else callback.onWhoAmIFail(WhoAmIError.fromErrorID(errorCode));
+        if (logoutSuccess) callback.onLogoutSuccess();
+        else callback.onLogoutFail(LogoutError.fromErrorID(errorCode));
     }
 
-    public interface PostWhoAmICallback {
-        void onWhoAmISuccess(UserResponse UserData);
-        void onWhoAmIFail(WhoAmIError error);
+    public interface PostLogoutCallback {
+        void onLogoutSuccess();
+        void onLogoutFail(LogoutError error);
     }
 
-    public enum WhoAmIError{
+    public enum LogoutError{
         UNKNOWN_ERROR(1),
         LOGIN_REQUIRED(105);
 
         private int errorID;
 
-        WhoAmIError(int ID){
+        LogoutError(int ID){
             errorID = ID;
         }
 
-        public static WhoAmIError fromErrorID(int ID){
+        public static LogoutError fromErrorID(int ID){
             switch (ID){
                 case 105: return LOGIN_REQUIRED;
                 default: return UNKNOWN_ERROR;

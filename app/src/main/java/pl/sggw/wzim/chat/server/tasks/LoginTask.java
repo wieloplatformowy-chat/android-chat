@@ -75,7 +75,6 @@ public class LoginTask extends AsyncTask<Void, Void, Void> {
 
         public static LoginError fromErrorID(int ID){
             switch (ID){
-                case 1: return UNKNOWN_ERROR;
                 case 101: return USER_NOT_EXISTS;
                 case 102: return INVALID_PASSWORD;
                 default: return UNKNOWN_ERROR;
