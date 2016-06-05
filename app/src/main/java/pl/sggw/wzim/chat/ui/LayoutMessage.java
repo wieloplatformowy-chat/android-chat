@@ -1,7 +1,9 @@
-package pl.sggw.wzim.chat;
+package pl.sggw.wzim.chat.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.sggw.wzim.chat.mock.MockProfileInfo;
 
 /**
  * Created by Michal on 2016-05-18.

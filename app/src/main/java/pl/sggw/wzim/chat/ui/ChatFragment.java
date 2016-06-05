@@ -1,4 +1,4 @@
-package pl.sggw.wzim.chat;
+package pl.sggw.wzim.chat.ui;
 
 
 import android.os.Bundle;
@@ -13,6 +13,10 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import pl.sggw.wzim.chat.R;
+import pl.sggw.wzim.chat.mock.MockDatabaseConnection;
+import pl.sggw.wzim.chat.mock.MockProfileInfo;
+
 public class ChatFragment extends Fragment implements View.OnClickListener{
 
     private EditText mMessageInputForm;
@@ -20,6 +24,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener{
 
     private ArrayList<Message> mMessageList;
     private MessageAdapter messageAdapter;
+    private RecyclerView recyclerView;
 
 
     @Override
@@ -37,7 +42,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener{
 
         root.findViewById(R.id.sendMessageButton).setOnClickListener(this);
 
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.messageRecyclerView);
+        recyclerView = (RecyclerView) root.findViewById(R.id.messageRecyclerView);
 
         messageAdapter = new MessageAdapter(mMessageList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(root.getContext());
@@ -68,8 +73,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener{
 
             Calendar calendarInstance = Calendar.getInstance();
             String timestamp = calendarInstance.get(Calendar.HOUR_OF_DAY) + ":" + calendarInstance.get(Calendar.MINUTE);
-            messageAdapter.addMessage(new Message(message,timestamp,MockProfileInfo.getLoggedUser()));
+            messageAdapter.addMessage(new Message(message,timestamp, MockProfileInfo.getLoggedUser()));
             messageAdapter.notifyDataSetChanged();
+            recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
         }
     }
 }

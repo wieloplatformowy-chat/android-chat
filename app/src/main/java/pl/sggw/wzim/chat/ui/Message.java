@@ -1,4 +1,4 @@
-package pl.sggw.wzim.chat;
+package pl.sggw.wzim.chat.ui;
 
 
 import android.os.Parcel;

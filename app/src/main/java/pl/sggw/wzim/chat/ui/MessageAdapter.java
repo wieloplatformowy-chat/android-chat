@@ -1,13 +1,14 @@
-package pl.sggw.wzim.chat;
+package pl.sggw.wzim.chat.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.sggw.wzim.chat.R;
 
 /**
  * Created by Michal on 2016-05-18.
@@ -94,8 +95,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         rawMessageList.add(message);
 
         messageWLayoutInfoList.addAll(LayoutMessage.parseLastTwoMessages(message, lastMessage));
-
-        notifyDataSetChanged();
     }
 
 }

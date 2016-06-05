@@ -1,4 +1,4 @@
-package pl.sggw.wzim.chat;
+package pl.sggw.wzim.chat.ui;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 /**
  * Created by Michal on 2016-05-27.
  */
-public class Contact {
+public class Contact implements ContactListItem{
 
     private Bitmap profilePicture;
     private String name;
@@ -40,5 +40,10 @@ public class Contact {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
+    }
+
+    @Override
+    public boolean isSectionHeader() {
+        return false;
     }
 }

@@ -1,4 +1,4 @@
-package pl.sggw.wzim.chat;
+package pl.sggw.wzim.chat.ui;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,7 +17,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class ChatActivity extends AppCompatActivity {
+import pl.sggw.wzim.chat.R;
+
+public class ChatActivity extends AppCompatActivity implements ContactListFragment.OnContactSelectedListener {
 
     boolean mTwoPane = true;
 
@@ -84,4 +86,9 @@ public class ChatActivity extends AppCompatActivity {
         return new BitmapDrawable(getResources(), finalImage);
     }
 
+    @Override
+    public void onContactSelected() {
+        if(!mTwoPane)
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ChatFragment()).addToBackStack(null).commit();
+    }
 }
