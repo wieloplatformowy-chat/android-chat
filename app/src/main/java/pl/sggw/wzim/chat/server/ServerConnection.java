@@ -1,6 +1,8 @@
 package pl.sggw.wzim.chat.server;
 
 
+import java.util.List;
+
 import pl.sggw.wzim.chat.server.tasks.*;
 import pl.sggw.wzim.chat.swagger.model.*;
 
@@ -191,5 +193,55 @@ public class ServerConnection {
         else context.onMyFriendsFail(MyFriendsTask.MyFriendsError.LOGIN_REQUIRED);
     }
 
+    /**
+     * Asynchronously tries to create a new group with the logged user assigned
+     * User must be logged in in order to use this method (otherwise it calls onCreateGroupFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     */
+    public void CreateGroup(CreateGroupTask.PostCreateGroupCallback context){
+        if (userToken != null) (new CreateGroupTask(context, userToken.getToken())).execute();
+        else context.onCreateGroupFail(CreateGroupTask.CreateGroupError.LOGIN_REQUIRED);
+    }
 
+    /**
+     * Asynchronously tries to assign users to group.
+     * User must be logged in in order to use this method (otherwise it calls onInviteToGroupFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     * @param groupID ID of a group you are adding users to.
+     * @param userIds list of ID's of users you want to assign to group.
+     */
+    public void InviteToGroup(InviteToGroupTask.PostInviteToGroupCallback context, Long groupID, List<Long> userIds){
+        InviteToGroupParams invitation = new InviteToGroupParams();
+        invitation.setGroupId(groupID);
+        invitation.setUserIds(userIds);
+        if (userToken != null) (new InviteToGroupTask(context, invitation, userToken.getToken())).execute();
+        else context.onInviteToGroupFail(InviteToGroupTask.InviteToGroupError.LOGIN_REQUIRED);
+    }
+
+    /**
+     * Asynchronously tries to check groups of logged user.
+     * User must be logged in in order to use this method (otherwise it calls onMyGroupsFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     */
+    public void MyGroups(MyGroupsTask.PostMyGroupsCallback context){
+        if (userToken != null) (new MyGroupsTask(context, userToken.getToken())).execute();
+        else context.onMyGroupsFail(MyGroupsTask.MyGroupsError.LOGIN_REQUIRED);
+    }
+
+    /**
+     * Asynchronously tries to check groups of logged user.
+     * User must be logged in in order to use this method (otherwise it calls onMyGroupsFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     */
+    public void RenameGroup(RenameGroupTask.PostRenameGroupFCallback context, Long groupID, String newName){
+        RenameGroupParams renameGroupParams = new RenameGroupParams();
+        renameGroupParams.setGroupId(groupID);
+        renameGroupParams.setNewName(newName);
+        if (userToken != null) (new RenameGroupTask(context, renameGroupParams, userToken.getToken())).execute();
+        else context.onRenameGroupFail(RenameGroupTask.RenameGroupError.LOGIN_REQUIRED);
+    }
 }

@@ -164,7 +164,7 @@ public class GrouprestcontrollerApi {
    * @param xAuthToken Authorization token
    * @return List<ConversationResponse>
    */
-  public List<ConversationResponse>  myUsingGET1 (String xAuthToken) throws ApiException {
+  public List<ConversationResponse>  myUsingGET (String xAuthToken) throws ApiException {
     Object localVarPostBody = null;
     
 
