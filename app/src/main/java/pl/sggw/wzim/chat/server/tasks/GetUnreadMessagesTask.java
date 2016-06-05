@@ -9,7 +9,6 @@ import java.util.List;
 
 import pl.sggw.wzim.chat.swagger.ApiException;
 import pl.sggw.wzim.chat.swagger.api.MessagerestcontrollerApi;
-import pl.sggw.wzim.chat.swagger.model.MessageResponse;
 
 /**
  * @author Patryk Konieczny

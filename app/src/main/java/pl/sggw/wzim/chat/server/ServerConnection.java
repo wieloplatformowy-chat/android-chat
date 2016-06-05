@@ -142,4 +142,54 @@ public class ServerConnection {
         if (userToken != null) (new GetUnreadMessagesTask(context, userToken.getToken())).execute();
         else context.onGetUnreadMessagesFail(GetUnreadMessagesTask.GetUnreadMessagesError.LOGIN_REQUIRED);
     }
+
+    /**
+     * Asynchronously tries to get conversation with given user
+     * User must be logged in in order to use this method (otherwise it calls onGetConversationsFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     * @param userID ID of user you want a conversation with.
+     */
+    public void GetConversation(GetConversationTask.PostGetConversationCallback context, Long userID)
+    {
+        if (userToken != null) (new GetConversationTask(context, userID, userToken.getToken())).execute();
+        else context.onGetConversationsFail(GetConversationTask.GetConversationsError.LOGIN_REQUIRED);
+    }
+
+    /**
+     * Asynchronously tries to add user as a friend.
+     * User must be logged in in order to use this method (otherwise it calls onAddFriendFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     * @param userID ID of user you want to add as a friend.
+     */
+    public void AddFriend(AddFriendTask.PostAddFriendCallback context, Long userID){
+        if (userToken != null) (new AddFriendTask(context, userID, userToken.getToken())).execute();
+        else context.onAddFriendFail(AddFriendTask.AddFriendError.LOGIN_REQUIRED);
+    }
+
+    /**
+     * Asynchronously tries to add delete user from friendlist.
+     * User must be logged in in order to use this method (otherwise it calls onDeleteFriendFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     * @param userID ID of user you want to delete from friends.
+     */
+    public void DeleteFriend(DeleteFriendTask.PostDeleteFriendCallback context, Long userID){
+        if (userToken != null) (new DeleteFriendTask(context, userID, userToken.getToken())).execute();
+        else context.onDeleteFriendFail(DeleteFriendTask.DeleteFriendError.LOGIN_REQUIRED);
+    }
+
+    /**
+     * Asynchronously tries to get friendlist of logged user from server.
+     * User must be logged in in order to use this method (otherwise it calls onMyFriendsFail callback).
+     *
+     * @param context callback notified after execution of an api call.
+     */
+    public void MyFriends(MyFriendsTask.PostMyFriendsCallback context){
+        if (userToken != null) (new MyFriendsTask(context, userToken.getToken())).execute();
+        else context.onMyFriendsFail(MyFriendsTask.MyFriendsError.LOGIN_REQUIRED);
+    }
+
+
 }

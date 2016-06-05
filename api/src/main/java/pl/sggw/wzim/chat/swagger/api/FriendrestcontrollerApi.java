@@ -224,7 +224,7 @@ public class FriendrestcontrollerApi {
    * @param xAuthToken Authorization token
    * @return RestResponse
    */
-  public RestResponse  registerUsingPOST (Long id, String xAuthToken) throws ApiException {
+  public RestResponse addUsingPOST (Long id, String xAuthToken) throws ApiException {
     Object localVarPostBody = null;
     
     // verify the required parameter 'id' is set
