@@ -1,4 +1,4 @@
-package pl.sggw.wzim.chat.ui;
+package pl.sggw.wzim.chat.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.sggw.wzim.chat.R;
+import pl.sggw.wzim.chat.model.LayoutMessage;
+import pl.sggw.wzim.chat.model.Message;
 
 /**
  * Created by Michal on 2016-05-18.

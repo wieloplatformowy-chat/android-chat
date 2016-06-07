@@ -2,7 +2,7 @@ package pl.sggw.wzim.chat.mock;
 
 import java.util.ArrayList;
 
-import pl.sggw.wzim.chat.ui.Message;
+import pl.sggw.wzim.chat.model.Message;
 
 public class MockDatabaseConnection {
     public static ArrayList<Message> getConversation(){

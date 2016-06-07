@@ -1,4 +1,4 @@
-package pl.sggw.wzim.chat.ui;
+package pl.sggw.wzim.chat;
 
 
 import android.os.Bundle;
@@ -14,14 +14,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import pl.sggw.wzim.chat.R;
-import pl.sggw.wzim.chat.mock.MockDatabaseConnection;
 import pl.sggw.wzim.chat.mock.MockProfileInfo;
 import pl.sggw.wzim.chat.server.ServerConnection;
-import pl.sggw.wzim.chat.server.tasks.GetConversationTask;
 import pl.sggw.wzim.chat.server.tasks.GetLastMessagesTask;
-import pl.sggw.wzim.chat.swagger.model.ConversationResponse;
 import pl.sggw.wzim.chat.swagger.model.MessageResponse;
+import pl.sggw.wzim.chat.model.Message;
+import pl.sggw.wzim.chat.adapters.MessageAdapter;
 
 public class ChatFragment extends Fragment implements View.OnClickListener, GetLastMessagesTask.PostGetMessageCallback{
 

@@ -1,4 +1,4 @@
-package pl.sggw.wzim.chat.ui;
+package pl.sggw.wzim.chat.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -47,12 +47,12 @@ public class IsOnlineTask extends AsyncTask<Void, Void, Void> {
         PostIsOnlineCallback callback = mCallback.get();
         if (callback == null) return;
 
-        if (IsOnlineSuccess) callback.onIsOnlineSuccess(online);
+        if (IsOnlineSuccess) callback.onIsOnlineSuccess(online, ID);
         else callback.onIsOnlineFail(IsOnlineError.fromErrorID(errorCode));
     }
 
     public interface PostIsOnlineCallback {
-        void onIsOnlineSuccess(boolean IsOnline);
+        void onIsOnlineSuccess(boolean IsOnline, long userID);
         void onIsOnlineFail(IsOnlineError error);
     }
 

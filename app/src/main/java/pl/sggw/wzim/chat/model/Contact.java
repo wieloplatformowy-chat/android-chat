@@ -1,7 +1,6 @@
-package pl.sggw.wzim.chat.ui;
+package pl.sggw.wzim.chat.model;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 /**
  * Created by Michal on 2016-05-27.
@@ -11,11 +10,20 @@ public class Contact implements ContactListItem{
     private Bitmap profilePicture;
     private String name;
     private boolean isAvailable;
+    private long id;
 
     public Contact(Bitmap profilePicture, String name, boolean isAvailable) {
         this.profilePicture = profilePicture;
         this.name = name;
         this.isAvailable = isAvailable;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Bitmap getProfilePicture() {

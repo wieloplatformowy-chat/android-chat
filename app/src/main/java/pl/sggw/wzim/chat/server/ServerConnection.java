@@ -204,6 +204,11 @@ public class ServerConnection {
         else context.onCreateGroupFail(CreateGroupTask.CreateGroupError.LOGIN_REQUIRED);
     }
 
+    public void IsOnline(IsOnlineTask.PostIsOnlineCallback context, Long userID){
+        if(userToken != null) (new IsOnlineTask(context,userID,userToken.getToken())).execute();
+        else context.onIsOnlineFail(IsOnlineTask.IsOnlineError.LOGIN_REQUIRED);
+    }
+
     /**
      * Asynchronously tries to assign users to group.
      * User must be logged in in order to use this method (otherwise it calls onInviteToGroupFail callback).

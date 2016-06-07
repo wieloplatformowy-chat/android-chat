@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import pl.sggw.wzim.chat.server.tasks.LoginTask;
 import pl.sggw.wzim.chat.server.ServerConnection;
-import pl.sggw.wzim.chat.ui.ChatFragment;
 
 public class LoginActivity extends AppCompatActivity implements LoginTask.PostLoginCallback {
 

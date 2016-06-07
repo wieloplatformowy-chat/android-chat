@@ -1,4 +1,4 @@
-package pl.sggw.wzim.chat.ui;
+package pl.sggw.wzim.chat;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,37 +8,46 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.sggw.wzim.chat.R;
+import pl.sggw.wzim.chat.adapters.ContactListItemAdapter;
 import pl.sggw.wzim.chat.server.ServerConnection;
-import pl.sggw.wzim.chat.server.tasks.AddFriendTask;
+import pl.sggw.wzim.chat.server.tasks.IsOnlineTask;
 import pl.sggw.wzim.chat.server.tasks.LoginTask;
 import pl.sggw.wzim.chat.server.tasks.MyFriendsTask;
 import pl.sggw.wzim.chat.server.tasks.MyGroupsTask;
 import pl.sggw.wzim.chat.swagger.model.ConversationResponse;
 import pl.sggw.wzim.chat.swagger.model.UserResponse;
+import pl.sggw.wzim.chat.model.Contact;
+import pl.sggw.wzim.chat.model.ContactListHeader;
+import pl.sggw.wzim.chat.model.ContactListItem;
 
-public class ContactListFragment extends Fragment implements AdapterView.OnItemClickListener, MyFriendsTask.PostMyFriendsCallback, MyGroupsTask.PostMyGroupsCallback, LoginTask.PostLoginCallback {
+public class ContactListFragment extends Fragment implements AdapterView.OnItemClickListener, MyFriendsTask.PostMyFriendsCallback, MyGroupsTask.PostMyGroupsCallback, LoginTask.PostLoginCallback, IsOnlineTask.PostIsOnlineCallback {
+
+    private List<UserResponse> mFriendList;
+
 
     @Override
     public void onMyFriendsSuccess(List<UserResponse> friendList) {
         if(friendList.size() == 0) return;
+        mFriendList = friendList;
 
         data.add(new ContactListHeader("Kontakty"));
         for(UserResponse response: friendList){
-            data.add(new Contact(null, response.getName() ,true));
+            ServerConnection.getInstance().IsOnline(this, response.getId());
+            Contact contact = new Contact(null, response.getName() ,false);
+            contact.setId(response.getId());
+            data.add(contact);
         }
         adapter.notifyDataSetChanged();
     }
@@ -74,12 +83,35 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
 
     }
 
+    @Override
+    public void onIsOnlineSuccess(boolean IsOnline, long userID) {
+        for(ContactListItem item: data){
+            Contact contact = null;
+            try{
+                contact = (Contact) item;
+            }catch (ClassCastException e){
+
+            }
+
+            if(contact != null && contact.getId() == userID) {
+                contact.setAvailable(IsOnline);
+                break;
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onIsOnlineFail(IsOnlineTask.IsOnlineError error) {
+
+    }
+
     public interface OnContactSelectedListener{
         void onContactSelected();
     }
 
     private OnContactSelectedListener listener;
-    private ArrayAdapter<ContactListItem> adapter;
+    private ContactListItemAdapter adapter;
     private ArrayList<ContactListItem> data;
 
     @Override
@@ -105,37 +137,7 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
         ListView lv1 = (ListView)root.findViewById(R.id.listView);
         lv1.setOnItemClickListener(this);
 
-        adapter = new ArrayAdapter<ContactListItem>(root.getContext(),R.layout.contact_list_row,R.id.textView3,data){
-
-            private ArrayList<Integer> headerPositions = new ArrayList<>();
-
-            @Override
-            public boolean isEnabled(int position) {
-                return !headerPositions.contains(position);
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-
-
-                LayoutInflater inflater = (LayoutInflater) super.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                if (getItem(position).isSectionHeader()) {
-                    // if section header
-                    convertView = inflater.inflate(R.layout.contact_list_header, parent, false);
-                    TextView headerText = (TextView) convertView.findViewById(R.id.headerTextView);
-                    headerText.setText(((ContactListHeader)getItem(position)).getText());
-                    headerPositions.add(position);
-                }
-                else {
-                    // if item
-                    convertView = inflater.inflate(R.layout.contact_list_row, parent, false);
-                    ((TextView) convertView.findViewById(R.id.textView3)).setText(((Contact)getItem(position)).getName());
-                }
-
-                return convertView;
-            }
-
-        };
+        adapter = new ContactListItemAdapter(root.getContext(),R.layout.contact_list_row,R.id.textView3,data);
 
         lv1.setAdapter(adapter);
 

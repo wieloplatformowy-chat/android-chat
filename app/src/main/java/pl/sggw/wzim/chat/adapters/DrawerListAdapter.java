@@ -1,4 +1,4 @@
-package pl.sggw.wzim.chat.ui;
+package pl.sggw.wzim.chat.adapters;
 
 import android.content.Context;
 import android.view.View;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import pl.sggw.wzim.chat.R;
+import pl.sggw.wzim.chat.model.Contact;
 
 
 public class DrawerListAdapter extends ArrayAdapter<Contact> {

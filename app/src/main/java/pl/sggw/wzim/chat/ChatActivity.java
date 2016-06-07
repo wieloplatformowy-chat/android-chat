@@ -1,4 +1,4 @@
-package pl.sggw.wzim.chat.ui;
+package pl.sggw.wzim.chat;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,14 +10,13 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import pl.sggw.wzim.chat.R;
+import pl.sggw.wzim.chat.model.Contact;
+import pl.sggw.wzim.chat.adapters.DrawerListAdapter;
 
 public class ChatActivity extends AppCompatActivity implements ContactListFragment.OnContactSelectedListener {
 
