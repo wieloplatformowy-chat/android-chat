@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">Chat</string>
     <string name="title_activity_login">Logowanie</string>
-    <string name="title_activity_register">Rejestracja</string>
+    <string name="title_activity_register">Zarejestruj</string>
     <string name="title_activity_main">Chat</string>
 
     <string name="send_button_text">Wyślij</string>
-    <string name="login_button_text">Zaloguj</string>
-    <string name="register_button_text">Zarejestruj</string>
+    <string name="login_button_text">Zaloguj się</string>
+    <string name="register_button_text">Rejestracja</string>
 
-    <string name="login_text">Login</string>
+    <string name="login_text">Username</string>
     <string name="password_text">Hasło</string>
     <string name="password_repeat_text">Potwierdź hasło</string>
     <string name="email_text">E-mail</string>
