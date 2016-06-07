@@ -12,12 +12,18 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import pl.sggw.wzim.chat.R;
 import pl.sggw.wzim.chat.mock.MockDatabaseConnection;
 import pl.sggw.wzim.chat.mock.MockProfileInfo;
+import pl.sggw.wzim.chat.server.ServerConnection;
+import pl.sggw.wzim.chat.server.tasks.GetConversationTask;
+import pl.sggw.wzim.chat.server.tasks.GetLastMessagesTask;
+import pl.sggw.wzim.chat.swagger.model.ConversationResponse;
+import pl.sggw.wzim.chat.swagger.model.MessageResponse;
 
-public class ChatFragment extends Fragment implements View.OnClickListener{
+public class ChatFragment extends Fragment implements View.OnClickListener, GetLastMessagesTask.PostGetMessageCallback{
 
     private EditText mMessageInputForm;
     private final static String LIST_DATA_KEY = "list data key";
@@ -37,8 +43,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener{
 //        if(savedInstanceState != null)
 //            mMessageList = savedInstanceState.getParcelableArrayList(LIST_DATA_KEY);
 //        else
-            mMessageList =  MockDatabaseConnection.getConversation();
-
+            mMessageList =  new ArrayList<>();
+        ServerConnection.getInstance().getLastMessages(this,(long) 123);//TODO replace placeholder id
 
         root.findViewById(R.id.sendMessageButton).setOnClickListener(this);
 
@@ -77,5 +83,15 @@ public class ChatFragment extends Fragment implements View.OnClickListener{
             messageAdapter.notifyDataSetChanged();
             recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
         }
+    }
+
+    @Override
+    public void onGetMessageSuccess(List<MessageResponse> messages) {
+
+    }
+
+    @Override
+    public void onGetMessageFail(GetLastMessagesTask.GetMessagesError error) {
+
     }
 }

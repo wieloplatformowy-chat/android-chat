@@ -27,10 +27,6 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_drawer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        toolbar.setLogo(getAvatarDrawable());
 
         if(findViewById(R.id.fragmentContainerM) == null){
             mTwoPane = false;
@@ -45,13 +41,6 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
                 supportManager.beginTransaction().add(R.id.fragmentContainer, new ContactListFragment()).commit();
             }
         }
-
-        //nav drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
 
         Bitmap launcherImage = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         ArrayList<Contact> data = new ArrayList<>();

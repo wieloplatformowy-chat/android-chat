@@ -5,18 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_chat">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.7"
-        android:id="@+id/fragmentContainerM"></FrameLayout>
+        android:layout_weight="0.7">
+
+        <include
+            layout="@layout/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/include" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fragmentContainerM"
+            android:layout_below="@+id/include"></FrameLayout>
+    </RelativeLayout>
+
+
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.3"
         android:id="@+id/fragmentContainerD"></FrameLayout>
+
 </LinearLayout>
