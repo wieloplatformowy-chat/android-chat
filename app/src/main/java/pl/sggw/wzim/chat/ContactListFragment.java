@@ -130,7 +130,7 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
 //        data[5] = new Contact(placeholderPicture,"Michal",true);
         data = new ArrayList<>();
 
-        //wykonuja sie obydwa w tym samym czasie; ok?
+
         ServerConnection.getInstance().login(this,"ObiektTestowy4","test");
 
 

@@ -16,12 +16,18 @@ import java.util.List;
 
 import pl.sggw.wzim.chat.mock.MockProfileInfo;
 import pl.sggw.wzim.chat.server.ServerConnection;
+import pl.sggw.wzim.chat.server.tasks.GetConversationTask;
 import pl.sggw.wzim.chat.server.tasks.GetLastMessagesTask;
+import pl.sggw.wzim.chat.server.tasks.LoginTask;
+import pl.sggw.wzim.chat.server.tasks.SendMessageTask;
+import pl.sggw.wzim.chat.server.tasks.WhoAmITask;
+import pl.sggw.wzim.chat.swagger.model.ConversationResponse;
 import pl.sggw.wzim.chat.swagger.model.MessageResponse;
 import pl.sggw.wzim.chat.model.Message;
 import pl.sggw.wzim.chat.adapters.MessageAdapter;
+import pl.sggw.wzim.chat.swagger.model.UserResponse;
 
-public class ChatFragment extends Fragment implements View.OnClickListener, GetLastMessagesTask.PostGetMessageCallback{
+public class ChatFragment extends Fragment implements View.OnClickListener, GetLastMessagesTask.PostGetMessageCallback,GetConversationTask.PostGetConversationCallback, SendMessageTask.SendMessageCallback {
 
     private EditText mMessageInputForm;
     private final static String LIST_DATA_KEY = "list data key";
@@ -29,6 +35,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
     private ArrayList<Message> mMessageList;
     private MessageAdapter messageAdapter;
     private RecyclerView recyclerView;
+    private Long conversationID;
 
 
     @Override
@@ -42,7 +49,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
 //            mMessageList = savedInstanceState.getParcelableArrayList(LIST_DATA_KEY);
 //        else
             mMessageList =  new ArrayList<>();
-        ServerConnection.getInstance().getLastMessages(this,(long) 123);//TODO replace placeholder id
+
+        ServerConnection.getInstance().GetConversation(this,1831L); // TODO: receive user id from activity
 
         root.findViewById(R.id.sendMessageButton).setOnClickListener(this);
 
@@ -80,16 +88,48 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
             messageAdapter.addMessage(new Message(message,timestamp, MockProfileInfo.getLoggedUser()));
             messageAdapter.notifyDataSetChanged();
             recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
+
+            ServerConnection instance = ServerConnection.getInstance();
+            instance.SendMessage(this,conversationID,message);
         }
     }
 
     @Override
     public void onGetMessageSuccess(List<MessageResponse> messages) {
+        if(messages.size() != 0)
 
+        for(MessageResponse response: messages){
+            Message message = new Message(response.getMessage(),response.getDate().toString().substring(12,20),String.valueOf(response.getUserId()));
+            messageAdapter.addMessage(message);
+        }
+        messageAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onGetMessageFail(GetLastMessagesTask.GetMessagesError error) {
 
     }
+
+
+    @Override
+    public void onGetConversationsSuccess(ConversationResponse conversation) {
+        conversationID = conversation.getId();
+        ServerConnection.getInstance().getLastMessages(this, conversationID);
+    }
+
+    @Override
+    public void onGetConversationsFail(GetConversationTask.GetConversationsError error) {
+
+    }
+
+    @Override
+    public void onSendMessageSuccess() {
+
+    }
+
+    @Override
+    public void onSendMessageFail(SendMessageTask.SendMessageError error) {
+
+    }
+
 }
