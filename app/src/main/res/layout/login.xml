@@ -17,39 +17,35 @@
         style="@style/editText"
         android:id="@+id/login_input"
         android:inputType="text"
-        android:hint="@string/login_text" />
+        android:hint="@string/login_text"
+        android:background="@drawable/EditTextStyle" />
 
-    <EditText
+        <EditText
         style="@style/editText"
         android:inputType="textPassword"
         android:id="@+id/password_input"
-        android:hint="@string/password_text" />
+        android:hint="@string/password_text"
+        android:background="@drawable/EditTextStyle"/>
+    </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp">
+        <Button
+            style="@style/buttonBigMain"
+            android:text="@string/login_button_text"
+            android:id="@+id/login_button"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            style="@style/buttonBigRest"
+            android:text="@string/title_activity_register"
+            android:id="@+id/register_button"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp">
-            <Button
-                style="@style/buttonBigMain"
-                android:text="@string/login_button_text"
-                android:id="@+id/login_button"
-                android:layout_margin="4dp"
-                android:padding="4dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <Button
-                style="@style/buttonBigRest"
-                android:text="@string/title_activity_register"
-                android:id="@+id/register_button"
-                android:padding="4dp"
-                android:layout_margin="4dp"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content" />
-
-        </LinearLayout>
-
+            android:layout_width="wrap_content" />
     </LinearLayout>
 
 </LinearLayout>

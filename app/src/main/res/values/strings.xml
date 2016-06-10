@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Chat</string>
-    <string name="title_activity_login">Logowanie</string>
-    <string name="title_activity_register">Zarejestruj</string>
     <string name="title_activity_main">Chat</string>
+    <string name="title_activity_login">Logowanie</string>
+    <string name="title_activity_register">Rejestracja</string>
 
     <string name="send_button_text">Wyślij</string>
     <string name="login_button_text">Zaloguj się</string>
-    <string name="register_button_text">Rejestracja</string>
+    <string name="register_button_text">Zarejestruj</string>
 
     <string name="login_text">Username</string>
     <string name="password_text">Hasło</string>
@@ -15,11 +15,11 @@
 
     <string name="invalidInput">Wprowadzone dane są nieprawidłowe</string>
 
-    <string name="register_success">Zarejestrowano pomyślnie.</string>
-    <string name="unknown_error">Nieznany błąd.</string>
-    <string name="username_taken">Użytkownik o takiej nazwie już istnieje.</string>
+    <string name="register_success">Zarejestrowano pomyślnie</string>
+    <string name="unknown_error">Nieznany błąd</string>
+    <string name="username_taken">Użytkownik o takiej nazwie już istnieje</string>
 
-    <string name="login_success">Zalogowano pomyślnie.</string>
-    <string name="user_not_exists">Użytkownik o takiej nazwie nie istnieje!</string>
-    <string name="invalid_password">Podane hasło jest nieprawidłowe.</string>
+    <string name="login_success">Zalogowano pomyślnie</string>
+    <string name="user_not_exists">Użytkownik o takiej nazwie nie istnieje</string>
+    <string name="invalid_password">Podane hasło jest nieprawidłowe</string>
 </resources>
