@@ -126,7 +126,7 @@ public class ServerConnection {
      * @param conversationID ID of conversation, where messages are.
      * @param message content of message
      */
-    public void SendMessage(SendMessageTask.SendMessageCallback context, long conversationID, String message){
+    public void sendMessage(SendMessageTask.SendMessageCallback context, long conversationID, String message){
         SendMessageParams messageParams = new SendMessageParams();
         messageParams.setConversationId(conversationID);
         messageParams.setMessage(message);
@@ -140,7 +140,7 @@ public class ServerConnection {
      *
      * @param context callback notified after execution of an api call.
      */
-    public void GetUnreadMessages(GetUnreadMessagesTask.PostGetUnreadMessagesCallback context){
+    public void getUnreadMessages(GetUnreadMessagesTask.PostGetUnreadMessagesCallback context){
         if (userToken != null) (new GetUnreadMessagesTask(context, userToken.getToken())).execute();
         else context.onGetUnreadMessagesFail(GetUnreadMessagesTask.GetUnreadMessagesError.LOGIN_REQUIRED);
     }
@@ -165,7 +165,7 @@ public class ServerConnection {
      * @param context callback notified after execution of an api call.
      * @param userID ID of user you want to add as a friend.
      */
-    public void AddFriend(AddFriendTask.PostAddFriendCallback context, Long userID){
+    public void addFriend(AddFriendTask.PostAddFriendCallback context, Long userID){
         if (userToken != null) (new AddFriendTask(context, userID, userToken.getToken())).execute();
         else context.onAddFriendFail(AddFriendTask.AddFriendError.LOGIN_REQUIRED);
     }
@@ -177,7 +177,7 @@ public class ServerConnection {
      * @param context callback notified after execution of an api call.
      * @param userID ID of user you want to delete from friends.
      */
-    public void DeleteFriend(DeleteFriendTask.PostDeleteFriendCallback context, Long userID){
+    public void deleteFriend(DeleteFriendTask.PostDeleteFriendCallback context, Long userID){
         if (userToken != null) (new DeleteFriendTask(context, userID, userToken.getToken())).execute();
         else context.onDeleteFriendFail(DeleteFriendTask.DeleteFriendError.LOGIN_REQUIRED);
     }
@@ -188,7 +188,7 @@ public class ServerConnection {
      *
      * @param context callback notified after execution of an api call.
      */
-    public void MyFriends(MyFriendsTask.PostMyFriendsCallback context){
+    public void myFriends(MyFriendsTask.PostMyFriendsCallback context){
         if (userToken != null) (new MyFriendsTask(context, userToken.getToken())).execute();
         else context.onMyFriendsFail(MyFriendsTask.MyFriendsError.LOGIN_REQUIRED);
     }
@@ -199,12 +199,12 @@ public class ServerConnection {
      *
      * @param context callback notified after execution of an api call.
      */
-    public void CreateGroup(CreateGroupTask.PostCreateGroupCallback context){
+    public void createGroup(CreateGroupTask.PostCreateGroupCallback context){
         if (userToken != null) (new CreateGroupTask(context, userToken.getToken())).execute();
         else context.onCreateGroupFail(CreateGroupTask.CreateGroupError.LOGIN_REQUIRED);
     }
 
-    public void IsOnline(IsOnlineTask.PostIsOnlineCallback context, Long userID){
+    public void isOnline(IsOnlineTask.PostIsOnlineCallback context, Long userID){
         if(userToken != null) (new IsOnlineTask(context,userID,userToken.getToken())).execute();
         else context.onIsOnlineFail(IsOnlineTask.IsOnlineError.LOGIN_REQUIRED);
     }
@@ -217,7 +217,7 @@ public class ServerConnection {
      * @param groupID ID of a group you are adding users to.
      * @param userIds list of ID's of users you want to assign to group.
      */
-    public void InviteToGroup(InviteToGroupTask.PostInviteToGroupCallback context, Long groupID, List<Long> userIds){
+    public void inviteToGroup(InviteToGroupTask.PostInviteToGroupCallback context, Long groupID, List<Long> userIds){
         InviteToGroupParams invitation = new InviteToGroupParams();
         invitation.setGroupId(groupID);
         invitation.setUserIds(userIds);
@@ -231,7 +231,7 @@ public class ServerConnection {
      *
      * @param context callback notified after execution of an api call.
      */
-    public void MyGroups(MyGroupsTask.PostMyGroupsCallback context){
+    public void myGroups(MyGroupsTask.PostMyGroupsCallback context){
         if (userToken != null) (new MyGroupsTask(context, userToken.getToken())).execute();
         else context.onMyGroupsFail(MyGroupsTask.MyGroupsError.LOGIN_REQUIRED);
     }
@@ -242,7 +242,7 @@ public class ServerConnection {
      *
      * @param context callback notified after execution of an api call.
      */
-    public void RenameGroup(RenameGroupTask.PostRenameGroupFCallback context, Long groupID, String newName){
+    public void renameGroup(RenameGroupTask.PostRenameGroupFCallback context, Long groupID, String newName){
         RenameGroupParams renameGroupParams = new RenameGroupParams();
         renameGroupParams.setGroupId(groupID);
         renameGroupParams.setNewName(newName);

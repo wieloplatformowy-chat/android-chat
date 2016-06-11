@@ -48,12 +48,12 @@ public class GetLastMessagesTask extends AsyncTask<Void, Void, Void> {
         PostGetMessageCallback callback = mCallback.get();
         if (callback == null) return;
 
-        if (getMessagesSuccess) callback.onGetMessageSuccess(messages);
+        if (getMessagesSuccess) callback.onGetMessageSuccess(ID, messages);
         else callback.onGetMessageFail(GetMessagesError.fromErrorID(errorCode));
     }
 
     public interface PostGetMessageCallback {
-        void onGetMessageSuccess(List<MessageResponse> messages);
+        void onGetMessageSuccess(Long conversationID, List<MessageResponse> messages);
         void onGetMessageFail(GetMessagesError error);
     }
 

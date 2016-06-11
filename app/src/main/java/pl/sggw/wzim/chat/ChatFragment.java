@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,14 +20,11 @@ import pl.sggw.wzim.chat.model.Contact;
 import pl.sggw.wzim.chat.server.ServerConnection;
 import pl.sggw.wzim.chat.server.tasks.GetConversationTask;
 import pl.sggw.wzim.chat.server.tasks.GetLastMessagesTask;
-import pl.sggw.wzim.chat.server.tasks.LoginTask;
 import pl.sggw.wzim.chat.server.tasks.SendMessageTask;
-import pl.sggw.wzim.chat.server.tasks.WhoAmITask;
 import pl.sggw.wzim.chat.swagger.model.ConversationResponse;
 import pl.sggw.wzim.chat.swagger.model.MessageResponse;
 import pl.sggw.wzim.chat.model.Message;
 import pl.sggw.wzim.chat.adapters.MessageAdapter;
-import pl.sggw.wzim.chat.swagger.model.UserResponse;
 
 public class ChatFragment extends Fragment implements View.OnClickListener, GetLastMessagesTask.PostGetMessageCallback,GetConversationTask.PostGetConversationCallback, SendMessageTask.SendMessageCallback {
 
@@ -97,12 +93,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
             recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
 
             ServerConnection instance = ServerConnection.getInstance();
-            instance.SendMessage(this,conversationID,message);
+            instance.sendMessage(this,conversationID,message);
         }
     }
 
     @Override
-    public void onGetMessageSuccess(List<MessageResponse> messages) {
+    public void onGetMessageSuccess(Long conversationID, List<MessageResponse> messages) {
         if(messages.size() != 0)
 
         for(MessageResponse response: messages){

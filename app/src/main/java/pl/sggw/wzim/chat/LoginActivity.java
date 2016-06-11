@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import pl.sggw.wzim.chat.server.ChatService;
 import pl.sggw.wzim.chat.server.tasks.LoginTask;
 import pl.sggw.wzim.chat.server.ServerConnection;
 
@@ -58,6 +59,7 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.PostLo
         Toast.makeText(LoginActivity.this, getString(R.string.login_success),
                 Toast.LENGTH_LONG).show();
         findViewById(R.id.login_button).setEnabled(true);
+        (new ChatService()).startService(null);
         startActivity(new Intent(LoginActivity.this, ChatFragment.class));
     }
 

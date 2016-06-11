@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 @ApiModel(description = "")
 public class MessageResponse  {
-  
+
   @SerializedName("conversationId")
   private Long conversationId = null;
   @SerializedName("date")
@@ -20,7 +20,7 @@ public class MessageResponse  {
   @SerializedName("userId")
   private Long userId = null;
 
-  
+
   /**
    **/
   @ApiModelProperty(value = "")
@@ -31,7 +31,7 @@ public class MessageResponse  {
     this.conversationId = conversationId;
   }
 
-  
+
   /**
    **/
   @ApiModelProperty(value = "")
@@ -42,7 +42,7 @@ public class MessageResponse  {
     this.date = date;
   }
 
-  
+
   /**
    **/
   @ApiModelProperty(value = "")
@@ -53,7 +53,7 @@ public class MessageResponse  {
     this.id = id;
   }
 
-  
+
   /**
    **/
   @ApiModelProperty(value = "")
@@ -64,7 +64,7 @@ public class MessageResponse  {
     this.message = message;
   }
 
-  
+
   /**
    **/
   @ApiModelProperty(value = "")
@@ -75,13 +75,22 @@ public class MessageResponse  {
     this.userId = userId;
   }
 
-  
+  @Override
+  public boolean equals(Object message)
+  {
+    if (message == null) return false;
+    if (message instanceof MessageResponse)
+    {
+      MessageResponse messageResponse = (MessageResponse)message;
+      return id == messageResponse.getId();
+    } else return  false;
+  }
 
   @Override
   public String toString()  {
     StringBuilder sb = new StringBuilder();
     sb.append("class MessageResponse {\n");
-    
+
     sb.append("  conversationId: ").append(conversationId).append("\n");
     sb.append("  date: ").append(date).append("\n");
     sb.append("  id: ").append(id).append("\n");

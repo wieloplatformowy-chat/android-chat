@@ -11,11 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,8 +78,8 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
 
     @Override
     public void onLoginSuccess() {
-        ServerConnection.getInstance().MyFriends(this);
-        ServerConnection.getInstance().MyGroups(this);
+        ServerConnection.getInstance().myFriends(this);
+        ServerConnection.getInstance().myGroups(this);
     }
 
     @Override
