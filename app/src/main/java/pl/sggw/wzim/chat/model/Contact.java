@@ -1,11 +1,13 @@
 package pl.sggw.wzim.chat.model;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by Michal on 2016-05-27.
  */
-public class Contact implements ContactListItem{
+public class Contact implements ContactListItem, Parcelable{
 
     private Bitmap profilePicture;
     private String name;
@@ -54,4 +56,36 @@ public class Contact implements ContactListItem{
     public boolean isSectionHeader() {
         return false;
     }
+
+    public Contact(Parcel parcel){
+        name = parcel.readString();
+        isAvailable = (parcel.readInt() == 1) ? true : false;
+        id = parcel.readLong();
+        profilePicture = null;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /*
+     * Temporarily avatar data is not going to be passed in a Parcel.
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeInt(isAvailable ? 1 : 0);
+        dest.writeLong(id);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Contact createFromParcel(Parcel in) {
+            return new Contact(in);
+        }
+
+        public Contact[] newArray(int size) {
+            return new Contact[size];
+        }
+    };
 }

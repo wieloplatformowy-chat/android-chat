@@ -10,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import pl.sggw.wzim.chat.mock.MockProfileInfo;
+import pl.sggw.wzim.chat.model.Contact;
 import pl.sggw.wzim.chat.server.ServerConnection;
 import pl.sggw.wzim.chat.server.tasks.GetConversationTask;
 import pl.sggw.wzim.chat.server.tasks.GetLastMessagesTask;
@@ -46,11 +49,15 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
         mMessageInputForm = (EditText) root.findViewById(R.id.messageInputForm);
 
 //        if(savedInstanceState != null)
-//            mMessageList = savedInstanceState.getParcelableArrayList(LIST_DATA_KEY);
+//            mMessageList = savedInstanceState.getParcelableArrayList(LIST_DATA_KEY); //TODO: add saving state after orientation change again
 //        else
             mMessageList =  new ArrayList<>();
 
-        ServerConnection.getInstance().GetConversation(this,1831L); // TODO: receive user id from activity
+        Bundle arguments = getArguments();
+        if(arguments != null){
+            Contact selectedContact = arguments.getParcelable(ChatActivity.SELECTED_CONTACT_KEY);
+            ServerConnection.getInstance().GetConversation(this,selectedContact.getId());
+        }
 
         root.findViewById(R.id.sendMessageButton).setOnClickListener(this);
 

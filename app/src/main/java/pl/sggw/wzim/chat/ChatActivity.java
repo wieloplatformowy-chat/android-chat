@@ -11,21 +11,31 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import pl.sggw.wzim.chat.model.Contact;
 import pl.sggw.wzim.chat.adapters.DrawerListAdapter;
+import pl.sggw.wzim.chat.model.ContactGroup;
 
 public class ChatActivity extends AppCompatActivity implements ContactListFragment.OnContactSelectedListener {
 
-    boolean mTwoPane = true;
+    private boolean mTwoPane = true;
+    public static final String SELECTED_CONTACT_KEY = "contact key";
+
+    private ArrayList<Contact>  drawerListData;
+    private DrawerListAdapter drawerListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_drawer);
+
+
 
         if(findViewById(R.id.fragmentContainerM) == null){
             mTwoPane = false;
@@ -42,13 +52,13 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
         }
 
         Bitmap launcherImage = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        ArrayList<Contact> data = new ArrayList<>();
-        data.add(new Contact(launcherImage,"Johnny",true));
-        data.add(new Contact(launcherImage,"Jenny",true));
-        data.add(new Contact(launcherImage,"Josh",false));
+        drawerListData = new ArrayList<>();
+
+        findViewById(R.id.drawerListHeader).setVisibility(View.INVISIBLE);
 
         ListView listView = (ListView)findViewById(R.id.drawerListView);
-        listView.setAdapter(new DrawerListAdapter(this,R.layout.drawer_list_row,R.id.drawer_name,data));
+        drawerListAdapter = new DrawerListAdapter(this,R.layout.drawer_list_row,R.id.drawer_name,drawerListData);
+        listView.setAdapter(drawerListAdapter);
     }
 
 
@@ -59,24 +69,44 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            clearDrawerListAndHide(); //TODO: test if works for tablets
         }
     }
 
-    private Drawable getAvatarDrawable(){
-        Bitmap launcherImage = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        Bitmap statusImage = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_status_online);
-        Bitmap finalImage = Bitmap.createBitmap(launcherImage.getWidth(), launcherImage.getHeight(), Bitmap.Config.ARGB_8888);
 
-        Canvas canvas = new Canvas(finalImage);
-        canvas.drawBitmap(launcherImage,0,0,null);
-        canvas.drawBitmap(statusImage , canvas.getWidth()-statusImage.getWidth(), canvas.getHeight()-statusImage.getHeight() , null);
-
-        return new BitmapDrawable(getResources(), finalImage);
+    private void clearDrawerListAndHide(){
+        findViewById(R.id.drawerListHeader).setVisibility(View.INVISIBLE);
+        drawerListData.clear();
+        drawerListAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onContactSelected() {
-        if(!mTwoPane)
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ChatFragment()).addToBackStack(null).commit();
+    public void onContactSelected(Contact contact) {
+        clearDrawerListAndHide();
+
+        if(!mTwoPane) {
+            ChatFragment chatFragment = new ChatFragment();
+            Bundle data = new Bundle();
+            data.putParcelable(SELECTED_CONTACT_KEY,contact);
+            chatFragment.setArguments(data);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, chatFragment).addToBackStack(null).commit();
+        }
+
+        TextView title = (TextView) findViewById(R.id.include).findViewById(R.id.textView2);
+        title.setText(contact.getName());
+
+        if(contact instanceof ContactGroup)
+        {
+            ContactGroup selectedGroup = (ContactGroup) contact;
+
+            if(selectedGroup.getParticipants().size() != 0){
+                findViewById(R.id.drawerListHeader).setVisibility(View.VISIBLE);
+                for(Contact participant: selectedGroup.getParticipants()){
+                    drawerListData.add(participant);
+                }
+                drawerListAdapter.notifyDataSetChanged();
+            }
+
+        }
     }
 }

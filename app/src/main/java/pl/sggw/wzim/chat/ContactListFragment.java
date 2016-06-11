@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.sggw.wzim.chat.adapters.ContactListItemAdapter;
+import pl.sggw.wzim.chat.model.ContactGroup;
 import pl.sggw.wzim.chat.server.ServerConnection;
 import pl.sggw.wzim.chat.server.tasks.IsOnlineTask;
 import pl.sggw.wzim.chat.server.tasks.LoginTask;
@@ -56,13 +57,20 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
     public void onMyFriendsFail(MyFriendsTask.MyFriendsError error) {
     }
 
+
     @Override
     public void onMyGroupsSuccess(List<ConversationResponse> groupConversations) {
         if(groupConversations.size() == 0) return;
 
         data.add(new ContactListHeader("Grupy"));
         for(ConversationResponse response: groupConversations){
-            data.add(new Contact(null, response.getName() ,true));
+            ArrayList<Contact> participants = new ArrayList<>();
+
+            for(UserResponse userResponse: response.getUsers())
+                participants.add(new Contact(null, userResponse.getName(),true));
+
+            ContactGroup group = new ContactGroup(null, response.getName(), participants, true); //TODO: add online status check for groups
+            data.add(group);
         }
         adapter.notifyDataSetChanged();
     }
@@ -107,7 +115,7 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
     }
 
     public interface OnContactSelectedListener{
-        void onContactSelected();
+        void onContactSelected(Contact contact);
     }
 
     private OnContactSelectedListener listener;
@@ -118,16 +126,7 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Bitmap placeholderPicture = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
         View root = inflater.inflate(R.layout.fragment_contact_list, container, false);
-//        ContactListItem[] data = new ContactListItem[6];
-//        data[0] = new ContactListHeader("Kontakty");
-//        data[1] = new Contact(placeholderPicture, "Michal", true);
-//        data[2] = new Contact(placeholderPicture, "Michal", true);
-//        data[3] = new ContactListHeader("Grupy");
-//        data[4] = new Contact(placeholderPicture,"Michal",true);
-//        data[5] = new Contact(placeholderPicture,"Michal",true);
         data = new ArrayList<>();
 
 
@@ -160,8 +159,9 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(!adapter.getItem(position).isSectionHeader() && listener != null)
-            listener.onContactSelected();
+        ContactListItem item = adapter.getItem(position);
+        if(!item.isSectionHeader() && listener != null)
+            listener.onContactSelected((Contact)item);
     }
 
     @Override

@@ -121,7 +121,8 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="10dp"
                 android:text="Kontakty"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:id="@+id/drawerListHeader"/>
 
             <ListView
                 android:id="@+id/drawerListView"
