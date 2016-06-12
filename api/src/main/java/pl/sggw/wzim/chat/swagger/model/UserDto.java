@@ -1,20 +1,29 @@
 package pl.sggw.wzim.chat.swagger.model;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import io.swagger.annotations.*;
 import com.google.gson.annotations.SerializedName;
-
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.*;
 
 @ApiModel(description = "")
 public class UserDto  {
-  
+
+  private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
+
   @SerializedName("email")
   private String email = null;
   @SerializedName("name")
   private String name = null;
   @SerializedName("password")
   private String password = null;
-
+  @SerializedName("avatar")
+  private Bitmap avatar = null;
   
   /**
    **/
@@ -48,7 +57,46 @@ public class UserDto  {
     this.password = password;
   }
 
-  
+  public Bitmap getAvatar() { return avatar != null ? avatar : getGravatar(); }
+  public void setAvatar(Bitmap avatar) { this.avatar = avatar; }
+
+  public UserDto(){ getAvatar(); }
+
+  private Bitmap getGravatar()
+  {
+    String avatarURL = GRAVATAR_URL + md5Hex(email.toLowerCase().trim()) + ".jpg";
+    try
+    {
+      HttpURLConnection connection = (HttpURLConnection) new URL(avatarURL).openConnection();
+      connection.connect();
+      InputStream input = connection.getInputStream();
+      avatar = BitmapFactory.decodeStream(input);
+      return avatar;
+    } catch (Exception e)
+    {
+      return null;
+    }
+  }
+
+  private String md5Hex (String message) {
+    try {
+      MessageDigest md =
+              MessageDigest.getInstance("MD5");
+      return hex(md.digest(message.getBytes("CP1252")));
+    } catch (NoSuchAlgorithmException e) {
+    } catch (UnsupportedEncodingException e) {
+    }
+    return null;
+  }
+
+  private String hex(byte[] array) {
+    StringBuffer sb = new StringBuffer();
+    for (int i = 0; i < array.length; ++i) {
+      sb.append(Integer.toHexString((array[i]
+              & 0xFF) | 0x100).substring(1,3));
+    }
+    return sb.toString();
+  }
 
   @Override
   public String toString()  {

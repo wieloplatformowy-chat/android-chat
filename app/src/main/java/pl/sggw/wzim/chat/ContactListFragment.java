@@ -1,8 +1,6 @@
 package pl.sggw.wzim.chat;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -41,7 +39,7 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
 
         data.add(new ContactListHeader("Kontakty"));
         for(UserResponse response: friendList){
-            ServerConnection.getInstance().IsOnline(this, response.getId());
+            ServerConnection.getInstance().isOnline(this, response.getId());
             Contact contact = new Contact(null, response.getName() ,false);
             contact.setId(response.getId());
             data.add(contact);
