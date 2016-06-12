@@ -63,7 +63,6 @@ public class UserResponse  {
   public Bitmap getAvatar() { return avatar != null ? avatar : getGravatar(); }
   public void setAvatar(Bitmap avatar) { this.avatar = avatar; }
 
-  public UserResponse(){ getGravatar(); }
 
   private Bitmap getGravatar()
   {

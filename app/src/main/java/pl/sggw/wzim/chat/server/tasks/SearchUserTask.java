@@ -1,5 +1,6 @@
 package pl.sggw.wzim.chat.server.tasks;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
@@ -22,13 +23,16 @@ public class SearchUserTask extends AsyncTask<Void, Void, Void> {
     private SearchUserParams searchParams;
     private List<UserResponse> users;
 
+    private Bitmap defAvatar;
+
     private int errorCode;
     private boolean searchUserSuccess = false;
 
-    public SearchUserTask(PostSearchUserCallback callback, SearchUserParams searchedUser, String authToken){
+    public SearchUserTask(PostSearchUserCallback callback, SearchUserParams searchedUser, String authToken, Bitmap defaultAvatar){
         mCallback = new WeakReference<>(callback);
         searchParams = searchedUser;
         token = authToken;
+        defAvatar = defaultAvatar;
     }
 
     protected Void doInBackground(Void... params){
@@ -36,6 +40,10 @@ public class SearchUserTask extends AsyncTask<Void, Void, Void> {
 
         try {
             users = api.searchUsingPOST(searchParams, token);
+            for (UserResponse user:
+                 users) {
+             if (user.getAvatar() == null) user.setAvatar(defAvatar);
+            }
             searchUserSuccess = true;
         } catch (ApiException ex) {
             JSONObject exceptionResponse = new JSONObject(ex.getMessage());

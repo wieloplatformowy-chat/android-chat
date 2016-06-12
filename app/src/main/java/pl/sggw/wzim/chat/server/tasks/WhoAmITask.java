@@ -1,5 +1,6 @@
 package pl.sggw.wzim.chat.server.tasks;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
@@ -19,12 +20,15 @@ public class WhoAmITask extends AsyncTask<Void, Void, Void> {
     private String token;
     private UserResponse theUserIAm;
 
+    private Bitmap defAvatar;
+
     private int errorCode;
     private boolean checkWhoAmISuccess = false;
 
-    public WhoAmITask(PostWhoAmICallback callback, String authToken){
+    public WhoAmITask(PostWhoAmICallback callback, String authToken, Bitmap defaultAvatar){
         mCallback = new WeakReference<>(callback);
         token = authToken;
+        defAvatar = defaultAvatar;
     }
 
     protected Void doInBackground(Void... params){
@@ -32,6 +36,7 @@ public class WhoAmITask extends AsyncTask<Void, Void, Void> {
 
         try {
             theUserIAm = api.whoAmIUsingGET(token);
+            if (theUserIAm.getAvatar() == null) theUserIAm.setAvatar(defAvatar);
             checkWhoAmISuccess = true;
         } catch (ApiException ex) {
             JSONObject exceptionResponse = new JSONObject(ex.getMessage());

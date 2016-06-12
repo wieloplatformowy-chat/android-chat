@@ -1,5 +1,7 @@
 package pl.sggw.wzim.chat.server.tasks;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
@@ -7,6 +9,7 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import pl.sggw.wzim.chat.R;
 import pl.sggw.wzim.chat.swagger.ApiException;
 import pl.sggw.wzim.chat.swagger.api.FriendrestcontrollerApi;
 import pl.sggw.wzim.chat.swagger.model.UserResponse;
@@ -20,18 +23,25 @@ public class MyFriendsTask extends AsyncTask<Void, Void, Void> {
     private String token;
     private List<UserResponse> friends;
 
+    private Bitmap defAvatar;
+
     private int errorCode;
     private boolean myFriendsSuccess = false;
 
-    public MyFriendsTask(PostMyFriendsCallback callback, String authToken){
+    public MyFriendsTask(PostMyFriendsCallback callback, String authToken, Bitmap defaultAvatar){
         mCallback = new WeakReference<>(callback);;
         token = authToken;
+        defAvatar = defaultAvatar;
     }
 
     protected Void doInBackground(Void... params){
         FriendrestcontrollerApi api = new FriendrestcontrollerApi();
         try {
             friends = api.myUsingGET(token);
+            for (UserResponse friend:
+                 friends) {
+                if (friend.getAvatar() == null) friend.setAvatar(defAvatar);
+            }
             myFriendsSuccess = true;
         } catch (ApiException ex) {
             JSONObject exceptionResponse = new JSONObject(ex.getMessage());

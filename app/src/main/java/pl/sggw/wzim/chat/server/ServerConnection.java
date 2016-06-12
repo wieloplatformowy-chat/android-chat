@@ -1,8 +1,13 @@
 package pl.sggw.wzim.chat.server;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import java.util.List;
 
+import pl.sggw.wzim.chat.App;
+import pl.sggw.wzim.chat.R;
 import pl.sggw.wzim.chat.server.tasks.*;
 import pl.sggw.wzim.chat.swagger.model.*;
 
@@ -14,11 +19,13 @@ public class ServerConnection {
     private static ServerConnection ourInstance = new ServerConnection();
     private static TokenResponse userToken = null;
 
+    private static Bitmap defaultAvatar;
     public static ServerConnection getInstance() {
         return ourInstance;
     }
 
     private ServerConnection() {
+        defaultAvatar = BitmapFactory.decodeResource(App.getInstance().getResources(), R.mipmap.ic_sample_avatar_small);
     }
 
     /**
@@ -62,7 +69,8 @@ public class ServerConnection {
      * @param context callback notified after execution of an api call.
      */
     public void whoAmI(WhoAmITask.PostWhoAmICallback context){
-        if (userToken != null) (new WhoAmITask(context,userToken.getToken())).execute();
+
+        if (userToken != null) (new WhoAmITask(context,userToken.getToken(), defaultAvatar)).execute();
         else context.onWhoAmIFail(WhoAmITask.WhoAmIError.LOGIN_REQUIRED);
     }
 
@@ -89,7 +97,7 @@ public class ServerConnection {
         SearchUserParams userParams = new SearchUserParams();
         userParams.setEmail(email);
         userParams.setName(name);
-        if (userToken != null) (new SearchUserTask(context, userParams,userToken.getToken())).execute();
+        if (userToken != null) (new SearchUserTask(context, userParams,userToken.getToken(), defaultAvatar)).execute();
         else context.onSearchUserFail(SearchUserTask.SearchUserError.LOGIN_REQUIRED);
     }
 
@@ -189,7 +197,7 @@ public class ServerConnection {
      * @param context callback notified after execution of an api call.
      */
     public void myFriends(MyFriendsTask.PostMyFriendsCallback context){
-        if (userToken != null) (new MyFriendsTask(context, userToken.getToken())).execute();
+        if (userToken != null) (new MyFriendsTask(context, userToken.getToken(), defaultAvatar)).execute();
         else context.onMyFriendsFail(MyFriendsTask.MyFriendsError.LOGIN_REQUIRED);
     }
 
@@ -249,4 +257,6 @@ public class ServerConnection {
         if (userToken != null) (new RenameGroupTask(context, renameGroupParams, userToken.getToken())).execute();
         else context.onRenameGroupFail(RenameGroupTask.RenameGroupError.LOGIN_REQUIRED);
     }
+
+
 }
