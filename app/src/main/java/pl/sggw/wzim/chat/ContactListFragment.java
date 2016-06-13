@@ -123,10 +123,6 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
         View root = inflater.inflate(R.layout.fragment_contact_list, container, false);
         data = new ArrayList<>();
 
-
-        ServerConnection.getInstance().login(this,"ObiektTestowy4","test");
-
-
         ListView lv1 = (ListView)root.findViewById(R.id.listView);
         lv1.setOnItemClickListener(this);
 
