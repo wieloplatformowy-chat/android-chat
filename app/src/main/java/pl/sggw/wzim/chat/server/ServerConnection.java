@@ -20,12 +20,31 @@ public class ServerConnection {
     private static TokenResponse userToken = null;
 
     private static Bitmap defaultAvatar;
+
+    private UserResponse loggedUser = null;
+
     public static ServerConnection getInstance() {
         return ourInstance;
     }
 
     private ServerConnection() {
         defaultAvatar = BitmapFactory.decodeResource(App.getInstance().getResources(), R.mipmap.ic_sample_avatar_small);
+    }
+
+    /**
+     * Returns  logged user
+     *
+     * @return currently logged user
+     */
+    public UserResponse getLoggedUser() {
+        return loggedUser;
+    }
+
+    /**
+     * Sets logged user
+     */
+    public void setLoggedUser(UserResponse loggedUser){
+        this.loggedUser = loggedUser;
     }
 
     /**
@@ -53,8 +72,6 @@ public class ServerConnection {
 
     /**
      * Sets token of a logged user.
-     * Na razie tylko przekazanie do klasy, prawdopodobnie później będą zmiany związane
-     * z jego przetrzymywaniem.
      *
      * @param token new user token.
      */

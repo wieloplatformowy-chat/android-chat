@@ -11,9 +11,6 @@
         android:supportsRtl="true"
         android:name=".App"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".server.ChatService"
-            android:exported="false"/>
         <activity
             android:name=".ChatActivity"
             android:label="@string/title_activity_main"

@@ -11,12 +11,14 @@ import pl.sggw.wzim.chat.swagger.ApiException;
 import pl.sggw.wzim.chat.swagger.api.UserrestcontrollerApi;
 import pl.sggw.wzim.chat.swagger.model.LoginDto;
 import pl.sggw.wzim.chat.swagger.model.LoginParams;
+import pl.sggw.wzim.chat.swagger.model.TokenResponse;
+import pl.sggw.wzim.chat.swagger.model.UserResponse;
 
 /**
  * @author Patryk Konieczny
  * @since 07.05.2016
  */
-public class LoginTask extends AsyncTask<Void, Void, Void> {
+public class LoginTask extends AsyncTask<Void, Void, Void>  implements WhoAmITask.PostWhoAmICallback {
 
     private WeakReference<PostLoginCallback> mCallback;
     private String userName;
@@ -53,7 +55,7 @@ public class LoginTask extends AsyncTask<Void, Void, Void> {
         PostLoginCallback callback = mCallback.get();
         if (callback == null) return;
 
-        if (loginSuccess) callback.onLoginSuccess();
+        if (loginSuccess) ServerConnection.getInstance().whoAmI(this);
         else callback.onLoginFail(LoginError.fromErrorID(errorCode));
     }
 
@@ -81,4 +83,15 @@ public class LoginTask extends AsyncTask<Void, Void, Void> {
             }
         }
     }
+
+    public void onWhoAmISuccess(UserResponse UserData){
+        PostLoginCallback callback = mCallback.get();
+        ServerConnection.getInstance().setLoggedUser(UserData);
+        if (callback == null) return;
+        callback.onLoginSuccess();
+    }
+    public void onWhoAmIFail(WhoAmITask.WhoAmIError error){
+
+    }
+
 }
