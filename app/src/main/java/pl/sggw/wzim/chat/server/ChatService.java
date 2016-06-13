@@ -62,6 +62,7 @@ public class ChatService extends Service implements GetUnreadMessagesTask.PostGe
                 }
             }
         };
+        newMessagesHandler.postDelayed(newMessagesRun,1000);
     }
 
     /**

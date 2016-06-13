@@ -59,7 +59,8 @@ public class GetLastMessagesTask extends AsyncTask<Void, Void, Void> {
 
     public enum GetMessagesError{
         UNKNOWN_ERROR(1),
-        LOGIN_REQUIRED(105);
+        LOGIN_REQUIRED(105),
+        CONVERSATION_NOT_EXISTS(108);
 
         private int errorID;
 
@@ -70,6 +71,7 @@ public class GetLastMessagesTask extends AsyncTask<Void, Void, Void> {
         public static GetMessagesError fromErrorID(int ID){
             switch (ID){
                 case 105: return LOGIN_REQUIRED;
+                case 108: return CONVERSATION_NOT_EXISTS;
                 default: return UNKNOWN_ERROR;
             }
         }

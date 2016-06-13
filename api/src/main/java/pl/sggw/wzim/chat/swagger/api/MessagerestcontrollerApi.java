@@ -6,6 +6,7 @@ import pl.sggw.wzim.chat.swagger.Pair;
 
 import pl.sggw.wzim.chat.swagger.model.*;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 import pl.sggw.wzim.chat.swagger.model.MessageResponse;
@@ -14,6 +15,8 @@ import pl.sggw.wzim.chat.swagger.model.RestResponse;
 import pl.sggw.wzim.chat.swagger.model.SendMessageParams;
 
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -158,7 +161,26 @@ public class MessagerestcontrollerApi {
     try {
       String localVarResponse = apiInvoker.invokeAPI(basePath, localVarPath, "GET", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarContentType);
       if(localVarResponse != null){
-        return (List<MessageResponse>) ApiInvoker.deserialize(localVarResponse, "array", MessageResponse.class);
+       localVarResponse = localVarResponse.substring(1, localVarResponse.length()-1);
+        String[] JsonMessages = localVarResponse.split("\\},");
+        List<MessageResponse> messageList = new LinkedList<>();
+        try {
+          for (String Json:
+                JsonMessages) {
+          String fullJson = Json.concat("}");
+          JSONObject JsonMessage = new JSONObject(fullJson);
+            MessageResponse message = new MessageResponse();
+            message.setConversationId(JsonMessage.getLong("id"));
+            message.setDate(new Timestamp(JsonMessage.getLong("date")));
+            message.setMessage(JsonMessage.getString("message"));
+            message.setUserId(JsonMessage.getLong("userId"));
+            message.setConversationId(JsonMessage.getLong("conversationId"));
+            messageList.add(message);
+          }
+        } catch (JSONException e){
+        }
+        
+        return messageList;
       }
       else {
         return null;
