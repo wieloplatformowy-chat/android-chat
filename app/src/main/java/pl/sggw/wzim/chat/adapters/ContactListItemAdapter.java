@@ -48,10 +48,12 @@ public class ContactListItemAdapter extends ArrayAdapter<ContactListItem>{
         }
         else {
             // if item
+            Contact c = (Contact)getItem(position);
             convertView = inflater.inflate(R.layout.contact_list_row, parent, false);
             TextView textView = (TextView) convertView.findViewById(R.id.textView3);
-            Contact c = (Contact)getItem(position);
             textView.setText(c.getName());
+            ImageView avatar = (ImageView) convertView.findViewById(R.id.imageView2);
+            avatar.setImageBitmap(c.getProfilePicture());
             if(!c.isAvailable()) {
                 textView.setTextColor(ContextCompat.getColor(super.getContext(),R.color.secondary_text));
                 ((ImageView)convertView.findViewById(R.id.imageView2)).setColorFilter(ContextCompat.getColor(super.getContext(),R.color.secondary_text));

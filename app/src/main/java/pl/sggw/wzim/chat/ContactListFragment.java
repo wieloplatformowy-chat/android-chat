@@ -40,7 +40,7 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
         data.add(new ContactListHeader("Kontakty"));
         for(UserResponse response: friendList){
             ServerConnection.getInstance().isOnline(this, response.getId());
-            Contact contact = new Contact(null, response.getName() ,false);
+            Contact contact = new Contact(response.getAvatar(), response.getName() ,false);
             contact.setId(response.getId());
             data.add(contact);
         }
