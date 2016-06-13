@@ -20,6 +20,7 @@ import pl.sggw.wzim.chat.swagger.model.MessageResponse;
  * @since 11.06.2016
  */
 public class ChatService extends Service implements GetUnreadMessagesTask.PostGetUnreadMessagesCallback, GetLastMessagesTask.PostGetMessageCallback {
+    private static ChatService ourInstance = new ChatService();
 
     private Handler unreadConversationHandler;
     private Runnable unreadConversationRun;
@@ -31,9 +32,12 @@ public class ChatService extends Service implements GetUnreadMessagesTask.PostGe
 
     private Map<Long, List<MessageResponse>> conversationLast20Messages;
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        int onStart = super.onStartCommand(intent, flags, startId);
+    public static ChatService getInstance() {
+        return ourInstance;
+    }
+
+    private ChatService()
+    {
         registeredForUnreadConversation = new LinkedList<>();
         registeredForNewMessages = new HashMap<>();
         conversationLast20Messages = new HashMap<>();
@@ -58,10 +62,7 @@ public class ChatService extends Service implements GetUnreadMessagesTask.PostGe
                 }
             }
         };
-
-        return onStart;
     }
-
 
     /**
      * Register callback, so it will be notified when there will be new unread conversations.
@@ -110,7 +111,7 @@ public class ChatService extends Service implements GetUnreadMessagesTask.PostGe
     public void onGetUnreadMessagesSuccess(List<Long> conversationsIDs) {
         for (UnreadConversationServiceCallback registered:
                 registeredForUnreadConversation) {
-            registered.onNewUnreadConversation(conversationsIDs);
+           if(registered != null) registered.onNewUnreadConversation(conversationsIDs);
         }
         unreadConversationHandler.postDelayed(unreadConversationRun,5000);
     }

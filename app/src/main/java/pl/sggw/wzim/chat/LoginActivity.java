@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.PostLo
         Toast.makeText(LoginActivity.this, getString(R.string.login_success),
                 Toast.LENGTH_LONG).show();
         findViewById(R.id.login_button).setEnabled(true);
-        //(new ChatService()).startService(null); // TODO podłączyć start serwisu
+        ChatService.getInstance();
         startActivity(new Intent(LoginActivity.this, ChatActivity.class));
     }
 
