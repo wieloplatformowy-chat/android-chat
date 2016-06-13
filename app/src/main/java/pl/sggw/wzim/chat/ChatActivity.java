@@ -48,6 +48,7 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
                 supportManager.beginTransaction().add(R.id.fragmentContainerD, new ChatFragment()).commit();
             }else{
                 supportManager.beginTransaction().add(R.id.fragmentContainer, new ContactListFragment()).commit();
+                setDrawerLocked(true);
             }
         }
 
@@ -61,6 +62,13 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
         listView.setAdapter(drawerListAdapter);
     }
 
+    private void setDrawerLocked(boolean isDrawerLocked){
+        if(isDrawerLocked){
+            ((DrawerLayout)findViewById(R.id.drawer_layout)).setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }else{
+            ((DrawerLayout)findViewById(R.id.drawer_layout)).setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -70,6 +78,7 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
         } else {
             super.onBackPressed();
             clearDrawerListAndHide(); //TODO: test if works for tablets
+            setDrawerLocked(true);
         }
     }
 
@@ -89,6 +98,7 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
             Bundle data = new Bundle();
             data.putParcelable(SELECTED_CONTACT_KEY,contact);
             chatFragment.setArguments(data);
+            setDrawerLocked(false);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, chatFragment).addToBackStack(null).commit();
         }
 

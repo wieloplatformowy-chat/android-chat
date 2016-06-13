@@ -55,6 +55,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
             ServerConnection.getInstance().GetConversation(this,selectedContact.getId());
         }
 
+        ServerConnection.getInstance().getLastMessages(this,2185);
+
         root.findViewById(R.id.sendMessageButton).setOnClickListener(this);
 
         recyclerView = (RecyclerView) root.findViewById(R.id.messageRecyclerView);
@@ -99,7 +101,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
 
     @Override
     public void onGetMessageSuccess(Long conversationID, List<MessageResponse> messages) {
-        if(messages.size() != 0)
+        if(messages.size() == 0) return;
 
         for(MessageResponse response: messages){
             Message message = new Message(response.getMessage(),response.getDate().toString().substring(12,20),String.valueOf(response.getUserId()));
@@ -117,7 +119,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
     @Override
     public void onGetConversationsSuccess(ConversationResponse conversation) {
         conversationID = conversation.getId();
-        ServerConnection.getInstance().getLastMessages(this, conversationID);
+//        ServerConnection.getInstance().getLastMessages(this, conversationID);
+//        ServerConnection.getInstance().getLastMessages(this,2185);
     }
 
     @Override

@@ -27,7 +27,7 @@ import pl.sggw.wzim.chat.model.Contact;
 import pl.sggw.wzim.chat.model.ContactListHeader;
 import pl.sggw.wzim.chat.model.ContactListItem;
 
-public class ContactListFragment extends Fragment implements AdapterView.OnItemClickListener, MyFriendsTask.PostMyFriendsCallback, MyGroupsTask.PostMyGroupsCallback, LoginTask.PostLoginCallback, IsOnlineTask.PostIsOnlineCallback {
+public class ContactListFragment extends Fragment implements AdapterView.OnItemClickListener, MyFriendsTask.PostMyFriendsCallback, MyGroupsTask.PostMyGroupsCallback, IsOnlineTask.PostIsOnlineCallback {
 
     private List<UserResponse> mFriendList;
 
@@ -74,16 +74,7 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
 
     }
 
-    @Override
-    public void onLoginSuccess() {
-        ServerConnection.getInstance().myFriends(this);
-        ServerConnection.getInstance().myGroups(this);
-    }
 
-    @Override
-    public void onLoginFail(LoginTask.LoginError error) {
-
-    }
 
     @Override
     public void onIsOnlineSuccess(boolean IsOnline, long userID) {
@@ -125,6 +116,9 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
 
         ListView lv1 = (ListView)root.findViewById(R.id.listView);
         lv1.setOnItemClickListener(this);
+
+        ServerConnection.getInstance().myFriends(this);
+        ServerConnection.getInstance().myGroups(this);
 
         adapter = new ContactListItemAdapter(root.getContext(),R.layout.contact_list_row,R.id.textView3,data);
 
