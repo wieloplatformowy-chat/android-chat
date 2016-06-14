@@ -46,12 +46,12 @@ public class GetConversationTask extends AsyncTask<Void, Void, Void> {
         PostGetConversationCallback callback = mCallback.get();
         if (callback == null) return;
 
-        if (getConversationSuccess) callback.onGetConversationsSuccess(conversation);
+        if (getConversationSuccess) callback.onGetConversationsSuccess(conversation, ID);
         else callback.onGetConversationsFail(GetConversationsError.fromErrorID(errorCode));
     }
 
     public interface PostGetConversationCallback {
-        void onGetConversationsSuccess(ConversationResponse conversation);
+        void onGetConversationsSuccess(ConversationResponse conversation, long userID);
         void onGetConversationsFail(GetConversationsError error);
     }
 

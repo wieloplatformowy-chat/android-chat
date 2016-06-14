@@ -61,6 +61,12 @@ public class ContactListItemAdapter extends ArrayAdapter<ContactListItem>{
                 ((ImageButton)convertView.findViewById(R.id.imageButton)).setColorFilter(ContextCompat.getColor(super.getContext(),R.color.secondary_text));
                 convertView.findViewById(R.id.imageView4).setVisibility(View.GONE);
             }
+
+            if(c.isNewMessage()){
+                (convertView.findViewById(R.id.imageView3)).setVisibility(View.VISIBLE);
+            }else{
+                (convertView.findViewById(R.id.imageView3)).setVisibility(View.INVISIBLE);
+            }
         }
 
         return convertView;

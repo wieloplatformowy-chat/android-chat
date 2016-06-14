@@ -1,9 +1,11 @@
 package pl.sggw.wzim.chat.adapters;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +13,21 @@ import java.util.List;
 import pl.sggw.wzim.chat.R;
 import pl.sggw.wzim.chat.model.LayoutMessage;
 import pl.sggw.wzim.chat.model.Message;
+import pl.sggw.wzim.chat.swagger.model.UserResponse;
 
-/**
+/*
  * Created by Michal on 2016-05-18.
  */
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder> {
 
     private List<Message> rawMessageList;
     private List<LayoutMessage> messageWLayoutInfoList;
+    private List<UserResponse> conversationPariticipants;
+
+
+    public void setConversationPariticipants(List<UserResponse> conversationPariticipants) {
+        this.conversationPariticipants = conversationPariticipants;
+    }
 
     public MessageAdapter(List<Message> messageList) {
         rawMessageList = messageList;
@@ -30,11 +39,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView content, timestamp;
+        public ImageView image;
 
         public MyViewHolder(View view) {
             super(view);
             content = (TextView) view.findViewById(R.id.messageContentText);
             timestamp = (TextView) view.findViewById(R.id.timestampText);
+            image = (ImageView) view.findViewById(R.id.avatarImageView);
         }
     }
 
@@ -78,6 +89,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         Message msg = rawMessageList.get(position);
         holder.content.setText(msg.getMessageContent());
         holder.timestamp.setText(msg.getTimestamp());
+        Bitmap avatar = getAvatarFromUID(msg.getSender());
+        if(avatar != null)
+            holder.image.setImageBitmap(avatar);
+    }
+
+    private Bitmap getAvatarFromUID(String uID){
+        for(UserResponse user: conversationPariticipants){
+            long id = user.getId();
+            if(uID.equals(id+"")){
+                return user.getAvatar();
+            }
+        }
+        return null;
     }
 
     @Override

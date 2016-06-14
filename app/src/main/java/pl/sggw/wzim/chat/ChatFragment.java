@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import pl.sggw.wzim.chat.mock.MockProfileInfo;
 import pl.sggw.wzim.chat.model.Contact;
+import pl.sggw.wzim.chat.server.ChatService;
 import pl.sggw.wzim.chat.server.ServerConnection;
 import pl.sggw.wzim.chat.server.tasks.GetConversationTask;
 import pl.sggw.wzim.chat.server.tasks.GetLastMessagesTask;
@@ -25,8 +25,9 @@ import pl.sggw.wzim.chat.swagger.model.ConversationResponse;
 import pl.sggw.wzim.chat.swagger.model.MessageResponse;
 import pl.sggw.wzim.chat.model.Message;
 import pl.sggw.wzim.chat.adapters.MessageAdapter;
+import pl.sggw.wzim.chat.swagger.model.UserResponse;
 
-public class ChatFragment extends Fragment implements View.OnClickListener, GetLastMessagesTask.PostGetMessageCallback,GetConversationTask.PostGetConversationCallback, SendMessageTask.SendMessageCallback {
+public class ChatFragment extends Fragment implements View.OnClickListener, GetLastMessagesTask.PostGetMessageCallback,GetConversationTask.PostGetConversationCallback, SendMessageTask.SendMessageCallback, ChatService.NewMessagesServiceCallback {
 
     private EditText mMessageInputForm;
     private final static String LIST_DATA_KEY = "list data key";
@@ -35,6 +36,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
     private MessageAdapter messageAdapter;
     private RecyclerView recyclerView;
     private Long conversationID;
+
 
 
     @Override
@@ -55,7 +57,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
             ServerConnection.getInstance().GetConversation(this,selectedContact.getId());
         }
 
-        ServerConnection.getInstance().getLastMessages(this,2185);
+
+
 
         root.findViewById(R.id.sendMessageButton).setOnClickListener(this);
 
@@ -66,6 +69,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(messageAdapter);
+
+
 
         return root;
     }
@@ -90,9 +95,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
 
             Calendar calendarInstance = Calendar.getInstance();
             String timestamp = calendarInstance.get(Calendar.HOUR_OF_DAY) + ":" + calendarInstance.get(Calendar.MINUTE);
-            messageAdapter.addMessage(new Message(message,timestamp, MockProfileInfo.getLoggedUser()));
-            messageAdapter.notifyDataSetChanged();
-            recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
+            //messageAdapter.addMessage(new Message(message,timestamp, ServerConnection.getInstance().getLoggedUser().getId().toString()));
+           //messageAdapter.notifyDataSetChanged();
+
 
             ServerConnection instance = ServerConnection.getInstance();
             instance.sendMessage(this,conversationID,message);
@@ -103,11 +108,13 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
     public void onGetMessageSuccess(Long conversationID, List<MessageResponse> messages) {
         if(messages.size() == 0) return;
 
-        for(MessageResponse response: messages){
-            Message message = new Message(response.getMessage(),response.getDate().toString().substring(12,20),String.valueOf(response.getUserId()));
-            messageAdapter.addMessage(message);
-        }
-        messageAdapter.notifyDataSetChanged();
+//        for(MessageResponse response: messages){
+//            Message message = new Message(response.getMessage(),response.getDate().toString().substring(12,20),String.valueOf(response.getUserId()));
+//            messageAdapter.addMessage(message);
+//        }
+//        messageAdapter.notifyDataSetChanged();
+
+        addMessageResponses(messages);
     }
 
     @Override
@@ -117,10 +124,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
 
 
     @Override
-    public void onGetConversationsSuccess(ConversationResponse conversation) {
+    public void onGetConversationsSuccess(ConversationResponse conversation, long userID) {
         conversationID = conversation.getId();
-//        ServerConnection.getInstance().getLastMessages(this, conversationID);
-//        ServerConnection.getInstance().getLastMessages(this,2185);
+        ServerConnection.getInstance().getLastMessages(this, conversationID);
+       ChatService.getInstance().registerToService(this,conversationID);
+
+       messageAdapter.setConversationPariticipants(conversation.getUsers()); //TODO: needs refreshing for groups
     }
 
     @Override
@@ -138,4 +147,18 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
 
     }
 
+    private void addMessageResponses(List<MessageResponse> newMessages){
+        for(MessageResponse response: newMessages){
+            Message message = new Message(response.getMessage(),response.getDate().toString().substring(12,20),String.valueOf(response.getUserId()));
+            messageAdapter.addMessage(message);
+        }
+        messageAdapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
+    }
+
+    @Override
+    public void onNewConversationMessages(List<MessageResponse> newMessages) {
+        if(newMessages != null && newMessages.size() != 0)
+        addMessageResponses(newMessages);
+    }
 }

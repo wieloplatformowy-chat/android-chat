@@ -12,12 +12,33 @@ public class Contact implements ContactListItem, Parcelable{
     private Bitmap profilePicture;
     private String name;
     private boolean isAvailable;
+    private boolean isNewMessage;
+
+    public boolean isNewMessage() {
+        return isNewMessage;
+    }
+
+    public void setNewMessage(boolean newMessage) {
+        isNewMessage = newMessage;
+    }
+
     private long id;
+    private long conversationID; //conversation with logged user
+
+
+    public long getConversationID() {
+        return conversationID;
+    }
+
+    public void setConversationID(long conversationID) {
+        this.conversationID = conversationID;
+    }
 
     public Contact(Bitmap profilePicture, String name, boolean isAvailable) {
         this.profilePicture = profilePicture;
         this.name = name;
         this.isAvailable = isAvailable;
+        isNewMessage = false;
     }
 
     public long getId() {

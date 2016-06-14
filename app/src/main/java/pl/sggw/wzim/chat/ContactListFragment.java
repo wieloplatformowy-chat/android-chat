@@ -16,7 +16,9 @@ import java.util.List;
 
 import pl.sggw.wzim.chat.adapters.ContactListItemAdapter;
 import pl.sggw.wzim.chat.model.ContactGroup;
+import pl.sggw.wzim.chat.server.ChatService;
 import pl.sggw.wzim.chat.server.ServerConnection;
+import pl.sggw.wzim.chat.server.tasks.GetConversationTask;
 import pl.sggw.wzim.chat.server.tasks.IsOnlineTask;
 import pl.sggw.wzim.chat.server.tasks.LoginTask;
 import pl.sggw.wzim.chat.server.tasks.MyFriendsTask;
@@ -27,7 +29,7 @@ import pl.sggw.wzim.chat.model.Contact;
 import pl.sggw.wzim.chat.model.ContactListHeader;
 import pl.sggw.wzim.chat.model.ContactListItem;
 
-public class ContactListFragment extends Fragment implements AdapterView.OnItemClickListener, MyFriendsTask.PostMyFriendsCallback, MyGroupsTask.PostMyGroupsCallback, IsOnlineTask.PostIsOnlineCallback {
+public class ContactListFragment extends Fragment implements AdapterView.OnItemClickListener, MyFriendsTask.PostMyFriendsCallback, MyGroupsTask.PostMyGroupsCallback, IsOnlineTask.PostIsOnlineCallback, ChatService.UnreadConversationServiceCallback, GetConversationTask.PostGetConversationCallback {
 
     private List<UserResponse> mFriendList;
 
@@ -40,6 +42,7 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
         data.add(new ContactListHeader("Kontakty"));
         for(UserResponse response: friendList){
             ServerConnection.getInstance().isOnline(this, response.getId());
+            ServerConnection.getInstance().GetConversation(this,response.getId());
             Contact contact = new Contact(response.getAvatar(), response.getName() ,false);
             contact.setId(response.getId());
             data.add(contact);
@@ -99,6 +102,39 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
 
     }
 
+    @Override
+    public void onNewUnreadConversation(List<Long> conversationsIDs) {
+        for(ContactListItem item: data){
+            long id = ((Contact)item).getConversationID();
+            if(conversationsIDs.contains(id)){
+                ((Contact)item).setAvailable(true);
+            }
+        }
+    }
+
+    @Override
+    public void onGetConversationsSuccess(ConversationResponse conversation, long userID) {
+        for(ContactListItem item: data){
+            Contact contact = null;
+            try{
+                contact = (Contact) item;
+            }catch (ClassCastException e){
+
+            }
+
+            if(contact != null && contact.getId() == userID) {
+                contact.setConversationID(conversation.getId());
+                break;
+            }
+        }
+
+    }
+
+    @Override
+    public void onGetConversationsFail(GetConversationTask.GetConversationsError error) {
+
+    }
+
     public interface OnContactSelectedListener{
         void onContactSelected(Contact contact);
     }
@@ -134,6 +170,8 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
             }
         });
 
+
+
         return root;
     }
 
@@ -156,4 +194,5 @@ public class ContactListFragment extends Fragment implements AdapterView.OnItemC
         if(chatActivity != null)
             listener = chatActivity;
     }
+
 }

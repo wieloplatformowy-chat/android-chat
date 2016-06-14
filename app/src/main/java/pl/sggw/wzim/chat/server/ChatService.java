@@ -8,8 +8,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.RunnableFuture;
 
 import android.os.Handler;
+import android.util.Log;
 
 import pl.sggw.wzim.chat.server.tasks.GetLastMessagesTask;
 import pl.sggw.wzim.chat.server.tasks.GetUnreadMessagesTask;
@@ -22,6 +24,7 @@ import pl.sggw.wzim.chat.swagger.model.MessageResponse;
 public class ChatService extends Service implements GetUnreadMessagesTask.PostGetUnreadMessagesCallback, GetLastMessagesTask.PostGetMessageCallback {
     private static ChatService ourInstance = new ChatService();
 
+    private boolean isServiceActive = true;
     private Handler unreadConversationHandler;
     private Runnable unreadConversationRun;
     private Handler newMessagesHandler;
@@ -43,27 +46,49 @@ public class ChatService extends Service implements GetUnreadMessagesTask.PostGe
         conversationLast20Messages = new HashMap<>();
         final ChatService service = this;
 
-        unreadConversationHandler = new Handler();
-        unreadConversationRun = new Runnable() {
-            @Override
-            public void run() {
-                if (!registeredForUnreadConversation.isEmpty()) ServerConnection.getInstance().getUnreadMessages(service);
-            }
-        };
-        unreadConversationHandler.postDelayed(unreadConversationRun,1000);
+//        unreadConversationHandler = new Handler();
+//        unreadConversationRun = new Runnable() {
+//            @Override
+//            public void run() {
+//                if (!registeredForUnreadConversation.isEmpty()) ServerConnection.getInstance().getUnreadMessages(service);
+//
+//            }
+//        };
+//        unreadConversationHandler.postDelayed(unreadConversationRun,1000);
+//
+//        newMessagesHandler = new Handler();
+//        newMessagesRun = new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                for (Long conversation:
+//                        registeredForNewMessages.keySet()) {
+//                    ServerConnection.getInstance().getLastMessages(service, conversation);
+//                }
+//            }
+//        };
+//        newMessagesHandler.postDelayed(newMessagesRun,1000);
 
-        newMessagesHandler = new Handler();
-        newMessagesRun = new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                for (Long conversation:
-                        registeredForNewMessages.keySet()) {
-                    ServerConnection.getInstance().getLastMessages(service, conversation);
-                }
+                try {
+                    while (isServiceActive) {
+                        Log.d("TAG","Chat service is running");
+                        Thread.sleep(1500);
+                        if (!registeredForUnreadConversation.isEmpty())
+                            ServerConnection.getInstance().getUnreadMessages(service);
+                        for (Long conversation :
+                                registeredForNewMessages.keySet()) {
+                            ServerConnection.getInstance().getLastMessages(service, conversation);
+                        }
+                    }
+                }catch(InterruptedException e){}
             }
-        };
-        newMessagesHandler.postDelayed(newMessagesRun,1000);
+        }).start();
     }
+
+
 
     /**
      * Register callback, so it will be notified when there will be new unread conversations.
@@ -114,19 +139,23 @@ public class ChatService extends Service implements GetUnreadMessagesTask.PostGe
                 registeredForUnreadConversation) {
            if(registered != null) registered.onNewUnreadConversation(conversationsIDs);
         }
-        unreadConversationHandler.postDelayed(unreadConversationRun,5000);
+       //unreadConversationHandler.postDelayed(unreadConversationRun,5000);
     }
 
     @Override
     public void onGetUnreadMessagesFail(GetUnreadMessagesTask.GetUnreadMessagesError error) {
-        unreadConversationHandler.postDelayed(unreadConversationRun,5000);
+        //unreadConversationHandler.postDelayed(unreadConversationRun,5000);
     }
 
     @Override
     public void onGetMessageSuccess(Long conversationID, List<MessageResponse> messages) {
         List<MessageResponse> last20Messages = conversationLast20Messages.get(conversationID);
+        conversationLast20Messages.remove(last20Messages);
         if (last20Messages != null && last20Messages.size() > 0){
-            messages.removeAll(last20Messages);
+            for(MessageResponse msg: last20Messages){
+                if(messages.contains(msg))
+                    messages.remove(msg);
+            }
             int newMessagesCount = messages.size();
             if (last20Messages.size() + newMessagesCount > 20) {
                 for (int i = 0; i < newMessagesCount; i++) {
@@ -137,15 +166,17 @@ public class ChatService extends Service implements GetUnreadMessagesTask.PostGe
         } else {
             last20Messages = messages;
         }
+        conversationLast20Messages.put(conversationID,last20Messages);
+
         NewMessagesServiceCallback callback = registeredForNewMessages.get(conversationID);
         if (callback != null) callback.onNewConversationMessages(messages);
         else registeredForNewMessages.remove(conversationID);
-        newMessagesHandler.postDelayed(newMessagesRun,5000);
+        //newMessagesHandler.postDelayed(newMessagesRun,5000);
     }
 
     @Override
     public void onGetMessageFail(GetLastMessagesTask.GetMessagesError error) {
-        newMessagesHandler.postDelayed(newMessagesRun,5000);
+        //newMessagesHandler.postDelayed(newMessagesRun,5000);
     }
 
     public interface UnreadConversationServiceCallback {
@@ -154,6 +185,10 @@ public class ChatService extends Service implements GetUnreadMessagesTask.PostGe
 
     public interface NewMessagesServiceCallback {
         void onNewConversationMessages(List<MessageResponse> newMessages);
+    }
+
+    public void stopChatService(){
+        isServiceActive = false;
     }
 }
 

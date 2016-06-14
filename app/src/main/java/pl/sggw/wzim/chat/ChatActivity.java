@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import pl.sggw.wzim.chat.model.Contact;
 import pl.sggw.wzim.chat.adapters.DrawerListAdapter;
 import pl.sggw.wzim.chat.model.ContactGroup;
+import pl.sggw.wzim.chat.server.ChatService;
+import pl.sggw.wzim.chat.server.ServerConnection;
 
 public class ChatActivity extends AppCompatActivity implements ContactListFragment.OnContactSelectedListener {
 
@@ -60,6 +63,8 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
         ListView listView = (ListView)findViewById(R.id.drawerListView);
         drawerListAdapter = new DrawerListAdapter(this,R.layout.drawer_list_row,R.id.drawer_name,drawerListData);
         listView.setAdapter(drawerListAdapter);
+
+        restoreToolbar();
     }
 
     private void setDrawerLocked(boolean isDrawerLocked){
@@ -77,8 +82,9 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            clearDrawerListAndHide(); //TODO: test if works for tablets
+            clearDrawerListAndHide();
             setDrawerLocked(true);
+            restoreToolbar();
         }
     }
 
@@ -87,6 +93,12 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
         findViewById(R.id.drawerListHeader).setVisibility(View.INVISIBLE);
         drawerListData.clear();
         drawerListAdapter.notifyDataSetChanged();
+    }
+
+    private void restoreToolbar(){
+        TextView title = (TextView) findViewById(R.id.include).findViewById(R.id.textView2);
+        title.setText(ServerConnection.getInstance().getLoggedUser().getName());
+        ((ImageView)findViewById(R.id.imageView5)).setImageBitmap(ServerConnection.getInstance().getLoggedUser().getAvatar());
     }
 
     @Override
@@ -118,5 +130,11 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
             }
 
         }
+    }
+
+    @Override
+    protected void onStop() {
+        ChatService.getInstance().stopChatService();
+        super.onStop();
     }
 }

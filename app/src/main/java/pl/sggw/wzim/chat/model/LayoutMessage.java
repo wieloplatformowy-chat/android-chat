@@ -3,7 +3,7 @@ package pl.sggw.wzim.chat.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.sggw.wzim.chat.mock.MockProfileInfo;
+import pl.sggw.wzim.chat.server.ServerConnection;
 
 /**
  * Created by Michal on 2016-05-18.
@@ -36,7 +36,7 @@ public class LayoutMessage extends Message{
             prevMessage.setTimeStampVisible(false);
         }
 
-        if(newMessage.getSender().equals(MockProfileInfo.getLoggedUser())){
+        if(newMessage.getSender().equals(ServerConnection.getInstance().getLoggedUser().getId().toString())){
             newMsgWInfo.setAlignmentType(ALIGN_RIGHT);
         }
 
@@ -56,7 +56,7 @@ public class LayoutMessage extends Message{
             m = rawMessageList.get(i);
             msgWInfo = new LayoutMessage(m.getMessageContent(),m.getTimestamp(),m.getSender());
 
-            if(msgWInfo.getSender().equals(MockProfileInfo.getLoggedUser())){
+            if(msgWInfo.getSender().equals(ServerConnection.getInstance().getLoggedUser().getId().toString())){
                 msgWInfo.setAlignmentType(ALIGN_RIGHT);
             }
 
