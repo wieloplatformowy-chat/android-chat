@@ -3,52 +3,64 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:weightSum="3">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
+        android:layout_height="0dp"
+        android:layout_weight="2">
 
-    <EditText
-        style="@style/editText"
-        android:id="@+id/login_input"
-        android:inputType="text"
-        android:hint="@string/login_text"
-        android:background="@drawable/EditTextStyle"/>
-
-    <EditText
-        style="@style/editText"
-        android:id="@+id/email_input"
-        android:inputType="textEmailAddress"
-        android:hint="@string/email_text"
-        android:background="@drawable/EditTextStyle"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:weightSum="3"
+            android:gravity="center">
 
         <EditText
-        style="@style/editText"
-        android:inputType="textPassword"
-        android:id="@+id/password_input"
-        android:hint="@string/password_text"
-        android:background="@drawable/EditTextStyle"/>
-
+            style="@style/editText"
+            android:id="@+id/login_input"
+            android:inputType="text"
+            android:hint="@string/login_text"
+            android:background="@drawable/edit_text_style"/>
 
         <EditText
-        style="@style/editText"
-        android:inputType="textPassword"
-        android:id="@+id/password2_input"
-        android:hint="@string/password_repeat_text"
-        android:background="@drawable/EditTextStyle"/>
+            style="@style/editText"
+            android:id="@+id/email_input"
+            android:inputType="textEmailAddress"
+            android:hint="@string/email_text"
+            android:background="@drawable/edit_text_style"/>
 
+            <EditText
+            style="@style/editText"
+            android:inputType="textPassword"
+            android:id="@+id/password_input"
+            android:hint="@string/password_text"
+            android:background="@drawable/edit_text_style"/>
+
+
+            <EditText
+            style="@style/editText"
+            android:inputType="textPassword"
+            android:id="@+id/password2_input"
+            android:hint="@string/password_repeat_text"
+            android:background="@drawable/edit_text_style"/>
+
+        </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:layout_weight="1">
         <Button
             style="@style/buttonBigMain"
             android:text="@string/register_button_text"
