@@ -2,54 +2,62 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DADADA"
-    android:padding="16dp">
+    android:background="@color/background"
+    android:padding="16dp"
+    android:measureWithLargestChild="false"
+    android:weightSum="3">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
+        android:layout_height="0dp"
+        android:layout_weight="2">
 
-    <TextView
-        style="@style/editTextLabel"
-        android:text="@string/login_text"
-        android:id="@+id/login_text"
-        android:layout_marginTop="0dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center">
 
-    <EditText
-        style="@style/editText"
-        android:id="@+id/login_input"
-        android:inputType="text" />
+        <EditText
+            style="@style/editText"
+            android:id="@+id/login_input"
+            android:inputType="text"
+            android:hint="@string/login_text"
+            android:background="@drawable/edit_text_style" />
 
-    <TextView
-        style="@style/editTextLabel"
-        android:text="@string/password_text"
-        android:id="@+id/password_text" />
+            <EditText
+            style="@style/editText"
+            android:inputType="textPassword"
+            android:id="@+id/password_input"
+            android:hint="@string/password_text"
+            android:background="@drawable/edit_text_style"/>
 
-    <EditText
-        style="@style/editText"
-        android:inputType="textPassword"
-        android:id="@+id/password_input" />
-
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="256dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:layout_weight="1">
         <Button
             style="@style/buttonBigMain"
             android:text="@string/login_button_text"
-            android:id="@+id/login_button" />
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <Button
             style="@style/buttonBigRest"
-            android:text="@string/register_button_text"
-            android:id="@+id/register_button" />
-
+            android:text="@string/title_activity_register"
+            android:id="@+id/register_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
     </LinearLayout>
+
 </LinearLayout>
