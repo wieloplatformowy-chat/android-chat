@@ -123,4 +123,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         messageWLayoutInfoList.addAll(LayoutMessage.parseLastTwoMessages(message, lastMessage));
     }
 
+    public boolean contains(Message message){
+        return rawMessageList.contains(message);
+    }
+
 }

@@ -35,6 +35,10 @@ public class GetLastMessagesTask extends AsyncTask<Void, Void, Void> {
 
         try {
             messages = api.lastUsingGET(ID,token);
+            for(MessageResponse message: messages){
+                if(message.getId() == null)
+                    message.setId(-1L);
+            }
             getMessagesSuccess = true;
         } catch (ApiException ex) {
             JSONObject exceptionResponse = new JSONObject(ex.getMessage());

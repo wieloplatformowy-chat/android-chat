@@ -86,6 +86,23 @@ public class MessageResponse  {
     } else return  false;
   }
 
+  @Override public int hashCode() {
+    // Start with a non-zero constant.
+    int result = 17;
+
+    result = 31 * result + (int) (conversationId ^ (conversationId >>> 32));
+
+    result = 31 * result + (date == null ? 0 : date.hashCode());
+
+    result = 31 * result + (int) (id ^ (id >>> 32));
+
+    result = 31 * result + (message == null ? 0 : message.hashCode());
+
+    result = 31 * result + (int) (userId ^ (userId >>> 32));
+
+    return result;
+  }
+
   @Override
   public String toString()  {
     StringBuilder sb = new StringBuilder();

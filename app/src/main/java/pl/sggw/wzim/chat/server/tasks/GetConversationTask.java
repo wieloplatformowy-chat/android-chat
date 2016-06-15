@@ -5,10 +5,13 @@ import android.os.AsyncTask;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
+import pl.sggw.wzim.chat.server.ServerConnection;
 import pl.sggw.wzim.chat.swagger.ApiException;
 import pl.sggw.wzim.chat.swagger.api.ConversationrestcontrollerApi;
 import pl.sggw.wzim.chat.swagger.model.ConversationResponse;
+import pl.sggw.wzim.chat.swagger.model.UserResponse;
 
 /**
  * @author Patryk Konieczny
@@ -29,10 +32,16 @@ public class GetConversationTask extends AsyncTask<Void, Void, Void> {
         token = authToken;
     }
 
-    protected Void doInBackground(Void... params){
+    protected Void doInBackground(Void... params) {
         ConversationrestcontrollerApi api = new ConversationrestcontrollerApi();
         try {
-            conversation = api.getUsingGET(ID,token);
+            conversation = api.getUsingGET(ID, token);
+            List<UserResponse> conversationUsers = conversation.getUsers();
+            for (UserResponse friend :
+                    conversationUsers) {
+                if (friend.getAvatar() == null)
+                    friend.setAvatar(ServerConnection.getDefaultAvatar());
+            }
             getConversationSuccess = true;
         } catch (ApiException ex) {
             JSONObject exceptionResponse = new JSONObject(ex.getMessage());

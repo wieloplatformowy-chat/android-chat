@@ -170,7 +170,7 @@ public class MessagerestcontrollerApi {
           String fullJson = Json.concat("}");
           JSONObject JsonMessage = new JSONObject(fullJson);
             MessageResponse message = new MessageResponse();
-            message.setConversationId(JsonMessage.getLong("id"));
+            message.setId(JsonMessage.getLong("id"));
             message.setDate(new Timestamp(JsonMessage.getLong("date")));
             message.setMessage(JsonMessage.getString("message"));
             message.setUserId(JsonMessage.getLong("userId"));

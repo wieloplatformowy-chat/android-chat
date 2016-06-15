@@ -105,11 +105,14 @@ public class ChatActivity extends AppCompatActivity implements ContactListFragme
     public void onContactSelected(Contact contact) {
         clearDrawerListAndHide();
 
-        if(!mTwoPane) {
-            ChatFragment chatFragment = new ChatFragment();
-            Bundle data = new Bundle();
-            data.putParcelable(SELECTED_CONTACT_KEY,contact);
-            chatFragment.setArguments(data);
+        ChatFragment chatFragment = new ChatFragment();
+        Bundle data = new Bundle();
+        data.putParcelable(SELECTED_CONTACT_KEY,contact);
+        chatFragment.setArguments(data);
+
+        if(mTwoPane) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerD, chatFragment).commit();
+        }else{
             setDrawerLocked(false);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, chatFragment).addToBackStack(null).commit();
         }

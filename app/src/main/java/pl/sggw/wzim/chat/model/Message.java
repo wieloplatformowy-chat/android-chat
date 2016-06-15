@@ -60,4 +60,16 @@ public class Message implements Parcelable {
             return new Message[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof Message)) return false;
+        Message m = (Message) o;
+        if(m.getSender().equals(this.getSender()) &&
+                m.getTimestamp().equals(this.getTimestamp()) &&
+                m.getMessageContent().equals(this.getMessageContent()))
+            return true;
+
+        return false;
+    }
 }

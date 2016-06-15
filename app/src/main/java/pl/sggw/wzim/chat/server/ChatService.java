@@ -13,6 +13,7 @@ import java.util.concurrent.RunnableFuture;
 import android.os.Handler;
 import android.util.Log;
 
+import pl.sggw.wzim.chat.model.Message;
 import pl.sggw.wzim.chat.server.tasks.GetLastMessagesTask;
 import pl.sggw.wzim.chat.server.tasks.GetUnreadMessagesTask;
 import pl.sggw.wzim.chat.swagger.model.MessageResponse;
@@ -147,31 +148,65 @@ public class ChatService extends Service implements GetUnreadMessagesTask.PostGe
         //unreadConversationHandler.postDelayed(unreadConversationRun,5000);
     }
 
+//    @Override
+//    public void onGetMessageSuccess(Long conversationID, List<MessageResponse> messages) {
+//        MessageResponse lastMessage = conversationLastMessages.get(conversationID);
+//
+//        if (lastMessage != null){
+//            int newMessagesPosition = -1;
+//            for(int i =0; i < messages.size(); i++){
+//                if(messages.get(i).getId() == lastMessage.getId()){
+//                    newMessagesPosition = i+1;
+//                    break;
+//                }
+//            }
+//            if(newMessagesPosition != -1){
+//                messages = messages.subList(newMessagesPosition,messages.size());
+//            }else{
+//                messages.clear();
+//            }
+//        }
+//        if(messages.size()!= 0) {
+//            conversationLastMessages.remove(lastMessage);
+//            lastMessage = messages.get(messages.size() - 1);
+//            conversationLastMessages.put(conversationID,lastMessage);
+//        }
+//
+//
+//        NewMessagesServiceCallback callback = registeredForNewMessages.get(conversationID);
+//        if (callback != null && messages.size() != 0) callback.onNewConversationMessages(messages);
+//        else registeredForNewMessages.remove(conversationID);
+//        //newMessagesHandler.postDelayed(newMessagesRun,5000);
+//    }
+
     @Override
     public void onGetMessageSuccess(Long conversationID, List<MessageResponse> messages) {
-        List<MessageResponse> last20Messages = conversationLast20Messages.get(conversationID);
-        conversationLast20Messages.remove(last20Messages);
-        if (last20Messages != null && last20Messages.size() > 0){
-            for(MessageResponse msg: last20Messages){
-                if(messages.contains(msg))
-                    messages.remove(msg);
-            }
-            int newMessagesCount = messages.size();
-            if (last20Messages.size() + newMessagesCount > 20) {
-                for (int i = 0; i < newMessagesCount; i++) {
-                    last20Messages.remove(i);
-                }
-            }
-            last20Messages.addAll(messages);
-        } else {
-            last20Messages = messages;
-        }
-        conversationLast20Messages.put(conversationID,last20Messages);
+//        List<MessageResponse> last20Messages = conversationLast20Messages.get(conversationID);
+//        conversationLast20Messages.remove(last20Messages);
+//        if (last20Messages != null && last20Messages.size() > 0){
+//
+//            for(MessageResponse msg: last20Messages){
+//                if(messages.contains(msg)){
+//                    messages.remove(msg);
+//                }
+//            }
+//
+//
+//            int newMessagesCount = messages.size();
+//            if (last20Messages.size() + newMessagesCount > 20) {
+//                for (int i = 0; i < newMessagesCount; i++) {
+//                    last20Messages.remove(i);
+//                }
+//            }
+//            last20Messages.addAll(messages);
+//        } else {
+//            last20Messages = messages;
+//        }
+//        conversationLast20Messages.put(conversationID,last20Messages);
 
         NewMessagesServiceCallback callback = registeredForNewMessages.get(conversationID);
         if (callback != null) callback.onNewConversationMessages(messages);
         else registeredForNewMessages.remove(conversationID);
-        //newMessagesHandler.postDelayed(newMessagesRun,5000);
     }
 
     @Override

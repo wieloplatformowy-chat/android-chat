@@ -1,6 +1,8 @@
 package pl.sggw.wzim.chat.adapters;
 
 import android.content.Context;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,9 +58,15 @@ public class ContactListItemAdapter extends ArrayAdapter<ContactListItem>{
             avatar.setImageBitmap(c.getProfilePicture());
             if(!c.isAvailable()) {
                 textView.setTextColor(ContextCompat.getColor(super.getContext(),R.color.secondary_text));
-                ((ImageView)convertView.findViewById(R.id.imageView2)).setColorFilter(ContextCompat.getColor(super.getContext(),R.color.secondary_text));
-                ((ImageView)convertView.findViewById(R.id.imageView3)).setColorFilter(ContextCompat.getColor(super.getContext(),R.color.secondary_text));
-                ((ImageButton)convertView.findViewById(R.id.imageButton)).setColorFilter(ContextCompat.getColor(super.getContext(),R.color.secondary_text));
+
+                ColorMatrix matrix = new ColorMatrix();
+                matrix.setSaturation(0);
+
+                ColorMatrixColorFilter grayscaleFilter = new ColorMatrixColorFilter(matrix);
+
+                ((ImageView)convertView.findViewById(R.id.imageView2)).setColorFilter(grayscaleFilter);
+                ((ImageView)convertView.findViewById(R.id.imageView3)).setColorFilter(grayscaleFilter);
+                ((ImageButton)convertView.findViewById(R.id.imageButton)).setColorFilter(grayscaleFilter);
                 convertView.findViewById(R.id.imageView4).setVisibility(View.GONE);
             }
 

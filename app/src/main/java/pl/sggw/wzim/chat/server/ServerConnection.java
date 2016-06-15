@@ -31,6 +31,10 @@ public class ServerConnection {
         defaultAvatar = BitmapFactory.decodeResource(App.getInstance().getResources(), R.mipmap.ic_sample_avatar_small);
     }
 
+    public static Bitmap getDefaultAvatar() {
+        return defaultAvatar;
+    }
+
     /**
      * Returns  logged user
      *

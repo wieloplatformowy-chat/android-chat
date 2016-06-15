@@ -27,7 +27,7 @@ import pl.sggw.wzim.chat.model.Message;
 import pl.sggw.wzim.chat.adapters.MessageAdapter;
 import pl.sggw.wzim.chat.swagger.model.UserResponse;
 
-public class ChatFragment extends Fragment implements View.OnClickListener, GetLastMessagesTask.PostGetMessageCallback,GetConversationTask.PostGetConversationCallback, SendMessageTask.SendMessageCallback, ChatService.NewMessagesServiceCallback {
+public class ChatFragment extends Fragment implements View.OnClickListener,GetConversationTask.PostGetConversationCallback, SendMessageTask.SendMessageCallback, ChatService.NewMessagesServiceCallback {
 
     private EditText mMessageInputForm;
     private final static String LIST_DATA_KEY = "list data key";
@@ -104,30 +104,14 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
         }
     }
 
-    @Override
-    public void onGetMessageSuccess(Long conversationID, List<MessageResponse> messages) {
-        if(messages.size() == 0) return;
 
-//        for(MessageResponse response: messages){
-//            Message message = new Message(response.getMessage(),response.getDate().toString().substring(12,20),String.valueOf(response.getUserId()));
-//            messageAdapter.addMessage(message);
-//        }
-//        messageAdapter.notifyDataSetChanged();
 
-        addMessageResponses(messages);
-    }
-
-    @Override
-    public void onGetMessageFail(GetLastMessagesTask.GetMessagesError error) {
-
-    }
 
 
     @Override
     public void onGetConversationsSuccess(ConversationResponse conversation, long userID) {
         conversationID = conversation.getId();
-        ServerConnection.getInstance().getLastMessages(this, conversationID);
-       ChatService.getInstance().registerToService(this,conversationID);
+        ChatService.getInstance().registerToService(this,conversationID);
 
        messageAdapter.setConversationPariticipants(conversation.getUsers()); //TODO: needs refreshing for groups
     }
@@ -148,12 +132,18 @@ public class ChatFragment extends Fragment implements View.OnClickListener, GetL
     }
 
     private void addMessageResponses(List<MessageResponse> newMessages){
+        boolean changed = false;
         for(MessageResponse response: newMessages){
-            Message message = new Message(response.getMessage(),response.getDate().toString().substring(12,20),String.valueOf(response.getUserId()));
-            messageAdapter.addMessage(message);
+            Message message = new Message(response.getMessage(),response.getDate().toString().substring(11,16),String.valueOf(response.getUserId()));
+            if(!messageAdapter.contains(message)) {
+                messageAdapter.addMessage(message);
+                changed = true;
+            }
         }
-        messageAdapter.notifyDataSetChanged();
-        recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
+        if(changed){
+            messageAdapter.notifyDataSetChanged();
+            recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
+        }
     }
 
     @Override
